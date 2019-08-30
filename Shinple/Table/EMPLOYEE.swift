@@ -4,7 +4,7 @@
 //
 //  Created by user on 28/08/2019.
 //  Copyright © 2019 veronica. All rights reserved.
-//
+
 
 
 import Foundation
@@ -12,7 +12,7 @@ import UIKit
 import AWSDynamoDB
 import AWSAuthCore
 
- 
+
 @objcMembers
 class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
 
@@ -25,9 +25,11 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _Employee_Position : String?
     var _Headquarter : String?
     var _ID : String?
-
     var _My_List : Any?
-
+   
+    
+    
+    
     var _Phone_Number : NSNumber?
     var _PW : String?
     var _Score : [String : NSNumber]?
@@ -63,27 +65,27 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
 
 }
-//
-//func createEmployee() {
-//
-//    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-//
-//    let EmItem: EMPLOYEE = EMPLOYEE()
-//
-//    EmItem._Employee_Number = 7777
-//    EmItem._Index = 3333
-//    EmItem._Department = "AA"
-//    EmItem._My_List = ["s" : ["3" : ["1":"2","4":"3"]]]
-//
-//    dynamoDbObjectMapper.save(EmItem, completionHandler: {
-//
-//        (error: Error?) -> Void in
-//
-//        if let error = error {
-//            print("Amazon DynamoDB Save Error: \(error)")
-//            return
-//        }
-//        print("An item was saved.")
-//    })
-//}
+
+func createEmployee() {
+
+    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+
+    let EmItem: EMPLOYEE = EMPLOYEE()
+
+    EmItem._Employee_Number = 7777
+    EmItem._Index = 3333
+    EmItem._Department = "AA"
+    EmItem._My_List = ["s" : ["3" : ["1":"2","4":"3"]]]
+
+    dynamoDbObjectMapper.save(EmItem, completionHandler: {
+
+        (error: Error?) -> Void in
+
+        if let error = error {
+            print("Amazon DynamoDB Save Error: \(error)")
+            return
+        }
+        print("An item was saved.")
+    })
+}
 
