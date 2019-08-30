@@ -21,7 +21,6 @@ class NavigationController: UINavigationController {
         //queryEmployee()
         //queryEmployee()
         queryLEC_CATE()
-        
         self.navigationBar.tintColor = .white
         self.navigationBar.backgroundColor = UIColor(red: 26/255, green: 2/255, blue: 74/255, alpha:1)
         //self.navigationBar.setBackgroundImage(img, for: .default)

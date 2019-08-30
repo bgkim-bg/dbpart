@@ -15,7 +15,7 @@ import AWSAuthCore
 
 @objcMembers
 class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
-
+    
     var _Index: NSNumber?
     var _Attendance : [String: NSNumber]?
     var _Corporation_Name : String?
@@ -26,10 +26,6 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _Headquarter : String?
     var _ID : String?
     var _My_List : Any?
-   
-    
-    
-    
     var _Phone_Number : NSNumber?
     var _PW : String?
     var _Score : [String : NSNumber]?
@@ -47,6 +43,7 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
 
     override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
+        
         return [
             "_Index" : "Index",
             "_Attendance" : "Attendance",
