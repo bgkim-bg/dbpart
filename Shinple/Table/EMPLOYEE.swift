@@ -118,6 +118,7 @@ func queryEmployee() {
         if output != nil {
             print(output!.items)
             for employee in output!.items {
+                // 기성아 안녕
                 let employeeItem = employee as? EMPLOYEE
                 print(type(of:employeeItem!._My_List))
                 var dict:NSDictionary = employeeItem!._My_List as! NSDictionary
