@@ -23,6 +23,7 @@ func queryEmployee() {
     queryExpression.expressionAttributeValues = [
         ":Employee_Number" : 1100001,          //바뀐 부분 이제 쿼리문 일단은 먹힐꺼야
         ":Index" : 1
+        
     ]
     
     // 2) Make the query
