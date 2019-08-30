@@ -12,7 +12,7 @@ import UIKit
 import AWSDynamoDB
 import AWSAuthCore
 
-
+ 
 @objcMembers
 class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
 
@@ -111,10 +111,12 @@ func queryEmployee() {
 
 
     dynamoDbObjectMapper.query(EMPLOYEE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+        print(output)
         if error != nil {
             print("The request failed. Error: \(String(describing: error))")
         }
         if output != nil {
+            print(output!.items)
             for employee in output!.items {
                 let employeeItem = employee as? EMPLOYEE
                 print(type(of:employeeItem!._My_List))

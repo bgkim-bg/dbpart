@@ -12,7 +12,7 @@ DEPENDENCIES:
   - AWSMobileClient (~> 2.6.13)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/cocoapods/specs.git:
     - AWSAuthCore
     - AWSCore
     - AWSDynamoDB
@@ -26,4 +26,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: af57612b49b5330466e29e75f6b66c5050a24d76
 
-COCOAPODS: 1.8.0.beta.1
+COCOAPODS: 1.7.5
