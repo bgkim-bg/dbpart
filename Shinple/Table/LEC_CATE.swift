@@ -48,21 +48,19 @@ func queryLEC_CATE() {
     
     queryExpression1.expressionAttributeNames = [
         "#LECTURE": "LECTURE"
-        //    "#개발": "개발"
+       
     ]
     queryExpression1.expressionAttributeValues = [
-        ":lecture" : "lecture"          //바뀐 부분 이제 쿼리문 일단은 먹힐꺼야
-        //    ":개발" : ("C","JAVA","Python","HTML","CSS")
+        ":lecture" : "lecture"
     ]
 
     
-    print(queryExpression1.keyConditionExpression)
     
     
     // 2) Make the query
-    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+    let dynamoDbObjectMapper2 = AWSDynamoDBObjectMapper.default()
     
-    dynamoDbObjectMapper.query(LEC_CATE.self, expression: queryExpression1) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+    dynamoDbObjectMapper2.query(LEC_CATE.self, expression: queryExpression1) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
   //      print(output)
         if error != nil {
             print("The request failed. Error: \(String(describing: error))")
@@ -70,12 +68,12 @@ func queryLEC_CATE() {
         if output != nil {
             for cate in output!.items {
                 let cateItem = cate as? LEC_CATE
-                print(type(of:cateItem!._develop))
-                print(cateItem)
-                
+               print(cateItem)
             }
         }
         
     }
     
 }
+
+

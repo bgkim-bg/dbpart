@@ -63,26 +63,26 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
 
 }
 
-func createEmployee() {
-
-    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-
-    let EmItem: EMPLOYEE = EMPLOYEE()
-
-    EmItem._Employee_Number = 7777
-    EmItem._Index = 3333
-    EmItem._Department = "AA"
-    EmItem._My_List = ["s" : ["3" : ["1":"2","4":"3"]]]
-
-    dynamoDbObjectMapper.save(EmItem, completionHandler: {
-
-        (error: Error?) -> Void in
-
-        if let error = error {
-            print("Amazon DynamoDB Save Error: \(error)")
-            return
-        }
-        print("An item was saved.")
-    })
-}
-
+//func createEmployee() {
+//
+//    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//
+//    let EmItem: EMPLOYEE = EMPLOYEE()
+//
+//    EmItem._Employee_Number = 7777
+//    EmItem._Index = 3333
+//    EmItem._Department = "AA"
+//    EmItem._My_List = ["s" : ["3" : ["1":"2","4":"3"]]]
+//
+//    dynamoDbObjectMapper.save(EmItem, completionHandler: {
+//
+//        (error: Error?) -> Void in
+//
+//        if let error = error {
+//            print("Amazon DynamoDB Save Error: \(error)")
+//            return
+//        }
+//        print("An item was saved.")
+//    })
+//}
+//
