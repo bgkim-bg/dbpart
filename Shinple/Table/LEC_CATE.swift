@@ -68,7 +68,10 @@ func queryLEC_CATE() {
         if output != nil {
             for cate in output!.items {
                 let cateItem = cate as? LEC_CATE
-               print(cateItem)
+               print(cateItem?._Care)
+            
+                let t = type(of: cateItem)
+                print("\(t)")
             }
         }
         

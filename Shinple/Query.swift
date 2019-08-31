@@ -179,6 +179,8 @@ func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
         index += 1
         print(key)
     }
+    
+    
     queryExpression.keyConditionExpression = expression
     let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
     dynamoDbObjectMapper.query(EMPLOYEE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in

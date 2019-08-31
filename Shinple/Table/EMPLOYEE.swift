@@ -25,11 +25,17 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _Employee_Position : String?
     var _Headquarter : String?
     var _ID : String?
-    var _My_List : Any?
+    var _My_List : Any? = [Any]()
     var _Phone_Number : NSNumber?
     var _PW : String?
     var _Score : [String : NSNumber]?
-
+    var _Count : NSNumber?
+    
+    
+    
+    
+    
+    
     class func dynamoDBTableName() -> String {
         return "EMPLOYEE"
     }
@@ -56,8 +62,7 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_ID" : "ID",
             "_My_List" : "My_List",
             "_Phone_Number" : "Phone_Number",
-            "_PW" : "PW",
-            "_Score" : "Score"
+            "_PW" : "PW"
         ]
     }
 
@@ -85,4 +90,47 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
 //        print("An item was saved.")
 //    })
 //}
-//
+
+
+
+
+func queryEMPLOYEE() {
+    
+    
+    
+    // 1) Configure the query
+    let queryExpression = AWSDynamoDBQueryExpression()
+    queryExpression.keyConditionExpression = "#Employee_Number = :Employee_Number AND #Index = :Index"
+//     #Employee_Position = :Employee_Position
+    
+    queryExpression.expressionAttributeNames = [
+        "#Employee_Number": "Employee_Number",
+//        "#Employee_Position": "Employee_Position",
+        "#Index" : "Index"
+    ]
+    queryExpression.expressionAttributeValues = [
+        ":Employee_Number" : 1100001,
+ //       ":Employee_Position" : "J1",
+        ":Index" : 1
+    ]
+    
+    // 2) Make the query
+    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+    
+    
+    
+    dynamoDbObjectMapper.query(EMPLOYEE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+        if error != nil {
+            print("The request failed. Error: \(String(describing: error))")
+        }
+        if output != nil {
+            for EMPLOYEe in output!.items {
+                let EMPLOYEEItem = EMPLOYEe as? EMPLOYEE
+                print("\(EMPLOYEEItem!._My_List)")
+                
+            }
+        }
+        
+    }
+    
+}
