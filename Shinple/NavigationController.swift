@@ -19,7 +19,8 @@ class NavigationController: UINavigationController {
         // Do any additional setup after loading the view.
 
         //queryEmployee()
-        testQueryEmployee(whereQuery: ["Employee_Number" : 7777], operatorText: ["="])
+//        testQueryEmployee(whereQuery: ["Employee_Number" : 7777], operatorText: ["="])
+        dbGetLecCate()
         // queryLEC_CATE()
         self.navigationBar.tintColor = .white
         self.navigationBar.backgroundColor = UIColor(red: 26/255, green: 2/255, blue: 74/255, alpha:1)
