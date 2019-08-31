@@ -25,6 +25,8 @@ func queryEmployee(whereQuery: [String:Any], operatorText: [String]) {
         queryExpression.expressionAttributeValues?[key2] = whereQuery[key]
         index += 1
     }
+    
+    
     queryExpression.keyConditionExpression = expression
     // 2) Make the query
     let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()

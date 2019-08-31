@@ -19,8 +19,14 @@ class NavigationController: UINavigationController {
         // Do any additional setup after loading the view.
 
         //queryEmployee()
-        //queryEmployee()
-        queryLEC_CATE()
+        // 이름 : 기성, 사번 : 111.   [네임 : 기성, 사번 : 111], [=, =]
+        //
+        // queryEmployee(whereQuery: <#T##[String : Any]#>, operatorText: <#T##[String]#>)
+        
+        //queryLEC_CATE()<#T##[String : Any]#>, operatorText: <#T##[String]#>)
+        
+        queryEMPLOYEE()
+        
         self.navigationBar.tintColor = .white
         self.navigationBar.backgroundColor = UIColor(red: 26/255, green: 2/255, blue: 74/255, alpha:1)
         //self.navigationBar.setBackgroundImage(img, for: .default)
