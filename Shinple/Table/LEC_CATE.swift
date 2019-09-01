@@ -14,7 +14,7 @@ class LEC_CATE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _Culture : Any?
     var _English : Any?
     var _Care : Any?
-    var _Certificate : Any?
+    var _Certicate : Any?
     var _Duty : Any?
     
     
@@ -34,7 +34,7 @@ class LEC_CATE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_Culture" : "Culture",
             "_English" : "English",
             "_Care": "Care",
-            "_Certificate" : "Certificate",
+            "_Certicate" : "Certicate",
             "_Duty" : "Duty"
         ]
     }

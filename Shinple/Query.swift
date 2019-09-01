@@ -68,11 +68,27 @@ import AWSDynamoDB
 
 
  - MARK: DELETE
- 1. 찜 기록 삭제 func deleteJjim() -> {}
+ 1. 찜 기록 삭제 func dbDeleteJjim() -> {}
  :: 새 테이블(찜 기록: 가명) -> Employee에 해당하는 것들 생성(delete)
 
  */
+func parseListData(beforeParsed:NSArray) -> [String] {
+    var parsed: [String] = []
+    for item in beforeParsed {
+        parsed.append(item as! String)
+    }
+    return parsed
+}
 
+
+
+
+func initQueryExpression() -> AWSDynamoDBQueryExpression {
+    let queryExpression = AWSDynamoDBQueryExpression()
+    queryExpression.expressionAttributeNames = [String:String]()
+    queryExpression.expressionAttributeValues = [String:Any]()
+    return queryExpression
+}
 
 func dbUpdateLectureWatched() {
     
@@ -90,9 +106,32 @@ func dbAddComment() {
     
 }
 
-func dbGetLecCate() -> [String:[String:String]] {
-    let placeHolder = ["hello":["world":"!"]]
-    return placeHolder
+func dbGetLecCate() -> [String:Any]? {
+    let queryExpression = initQueryExpression()
+    queryExpression.keyConditionExpression = "#LECTURE = :lecture"
+    queryExpression.expressionAttributeNames = ["#LECTURE":"LECTURE"]
+    queryExpression.expressionAttributeValues = [":lecture":"lecture"]
+    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+    
+    var returnCategory: [String:Any] = [:]
+    dynamoDbObjectMapper.query(LEC_CATE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+        if error != nil {
+            print("The request failed. Error: \(String(describing: error))")
+        }
+        if output != nil {
+            let data = output!.items.self[0] as! LEC_CATE
+            returnCategory["Care"] = parseListData(beforeParsed:data._Care as! NSArray)
+            returnCategory["Develop"] = parseListData(beforeParsed:data._develop as! NSArray)
+            returnCategory["Culture"] = parseListData(beforeParsed:data._Culture as! NSArray)
+            returnCategory["English"] = parseListData(beforeParsed:data._English as! NSArray)
+            returnCategory["Certicate"] = parseListData(beforeParsed:data._Certicate as! NSArray)
+            returnCategory["Duty"] = parseListData(beforeParsed:data._Duty as! NSArray)
+            returnCategory["Finance"] = parseListData(beforeParsed:data._Finance as! NSArray)
+            print(returnCategory, "b")
+        }
+    }
+    print(returnCategory, "a")
+    return nil
 }
 
 func dbGetMainLectures() {
@@ -119,11 +158,12 @@ func dbGetQuestion() {
     
 }
 
-func deleteJjim() {
+func dbDeleteJjim() {
     
 }
 
 func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
+    // MARK: ASYNC문제 해결해야함!!!!!!
     let queryExpression = AWSDynamoDBQueryExpression()
     let keys = whereQuery.keys
     queryExpression.expressionAttributeNames = [String:String]()
@@ -142,10 +182,7 @@ func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
     
     
     queryExpression.keyConditionExpression = expression
-    print(expression, queryExpression.expressionAttributeValues?.values, queryExpression.expressionAttributeValues?.keys)
-    // 2) Make the query
     let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-    
     dynamoDbObjectMapper.query(EMPLOYEE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
         if error != nil {
             print("The request failed. Error: \(String(describing: error))")
@@ -161,6 +198,7 @@ func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
         }
     }
 }
+
 //
 ////func queryLEC_CATE() {
 ////

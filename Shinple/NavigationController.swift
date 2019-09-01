@@ -19,6 +19,9 @@ class NavigationController: UINavigationController {
         // Do any additional setup after loading the view.
 
         //queryEmployee()
+//        testQueryEmployee(whereQuery: ["Employee_Number" : 7777], operatorText: ["="])
+        dbGetLecCate()
+        // queryLEC_CATE()
         // 이름 : 기성, 사번 : 111.   [네임 : 기성, 사번 : 111], [=, =]
         //
         // queryEmployee(whereQuery: <#T##[String : Any]#>, operatorText: <#T##[String]#>)
