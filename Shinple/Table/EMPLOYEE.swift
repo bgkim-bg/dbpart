@@ -14,6 +14,8 @@ import AWSAuthCore
 
 
 @objcMembers
+
+
 class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var _Index: NSNumber?
@@ -25,11 +27,20 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _Employee_Position : String?
     var _Headquarter : String?
     var _ID : String?
-    var _My_List : Any? = [Any]()
+    
+    
+    //var _My_List :Any?
+    var _My_List : [String : Any]?
+    
+    
+    
+    
+    
     var _Phone_Number : NSNumber?
     var _PW : String?
     var _Score : [String : NSNumber]?
     var _Count : NSNumber?
+    
     
     
     
@@ -92,26 +103,14 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
 //}
 
 
-
-
 func queryEMPLOYEE() {
     
     
     
     // 1) Configure the query
     let queryExpression = AWSDynamoDBQueryExpression()
-    queryExpression.keyConditionExpression = "#Employee_Number = :Employee_Number AND #Index = :Index"
-//     #Employee_Position = :Employee_Position
-    
     queryExpression.expressionAttributeNames = [
-        "#Employee_Number": "Employee_Number",
-//        "#Employee_Position": "Employee_Position",
-        "#Index" : "Index"
-    ]
-    queryExpression.expressionAttributeValues = [
-        ":Employee_Number" : 1100001,
- //       ":Employee_Position" : "J1",
-        ":Index" : 1
+        "_Corporation_Name" : "DS"
     ]
     
     // 2) Make the query
@@ -126,8 +125,7 @@ func queryEMPLOYEE() {
         if output != nil {
             for EMPLOYEe in output!.items {
                 let EMPLOYEEItem = EMPLOYEe as? EMPLOYEE
-                print("\(EMPLOYEEItem!._My_List)")
-                
+                print("\(EMPLOYEEItem!)")
             }
         }
         
