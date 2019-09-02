@@ -9,8 +9,8 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var _Index : NSNumber?
     var _E_num : NSNumber?
-    var _C_status : Bool?
-    var _J_status : Bool?
+    var _C_status : NSNumber?
+    var _J_status : NSNumber?
     var _L_length : NSNumber?
     var _L_link_img : String?
     var _L_link_video : String?
@@ -39,7 +39,7 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_L_link_video" : "L_link_video",
             "_L_name" : "L_name",
             "_L_num" : "L_num",
-            "_S_num" : "S_num,
+            "_S_num" : "S_num",
             "_U_length" : "U_length"
         ]
     }

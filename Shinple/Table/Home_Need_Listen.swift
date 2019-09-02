@@ -16,7 +16,7 @@ class Home_Need_Listen: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _Lec_name : String?
     var _Lec_num : NSNumber?
     var _S_cate : String?
-    var _Status : Bool?
+    var _Status : NSNumber?
     
     class func dynamoDBTableName() -> String {
         return "Home_Need_Listen"

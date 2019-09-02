@@ -10,7 +10,7 @@ import AWSAuthCore
 class LECTURE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var _Lecture_num: NSNumber?
-    var _Duty : Bool?
+    var _Duty : NSNumber?
     var _E_date : String?
     var _L_cate : String?
     var _L_content : String?
