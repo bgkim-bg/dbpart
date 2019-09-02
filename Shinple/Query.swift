@@ -147,7 +147,6 @@ func dbGetAlertNotice() {
 }
 
 func dbGetAlertNecessaryLecture() {
-    
 }
 
 func dbGetLectureDetail() {

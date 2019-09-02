@@ -15,19 +15,29 @@ class NavigationController: UINavigationController {
     override func viewDidLoad() {
 
 
+        
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
+ //       createQNA_Que()
+        updateQNA()
         //queryEmployee()
 //        testQueryEmployee(whereQuery: ["Employee_Number" : 7777], operatorText: ["="])
-        dbGetLecCate()
+//        dbGetLecCate()
+
+//        udpateQ
+
+        //      updateQNA()
+        
+    //        createQNA_Que()
+    //    createAns_Que()
         // queryLEC_CATE()
         // 이름 : 기성, 사번 : 111.   [네임 : 기성, 사번 : 111], [=, =]
         //
         // queryEmployee(whereQuery: <#T##[String : Any]#>, operatorText: <#T##[String]#>)
         
  //         queryLEC_CATE()
-          queryEMPLOYEE()
+ //         queryEMPLOYEE()
         self.navigationBar.tintColor = .white
         self.navigationBar.backgroundColor = UIColor(red: 26/255, green: 2/255, blue: 74/255, alpha:1)
         //self.navigationBar.setBackgroundImage(img, for: .default)

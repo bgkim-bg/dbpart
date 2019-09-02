@@ -18,7 +18,6 @@ import AWSAuthCore
 
 class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var _Index: NSNumber?
     var _Attendance : [String: NSNumber]?
     var _Corporation_Name : String?
     var _Department : String?
@@ -31,7 +30,6 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     //var _My_List :Any?
     var _My_List : [String : Any]?
-    
     
     
     
@@ -53,10 +51,6 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
 
     class func hashKeyAttribute() -> String {
         return "_Employee_Number"
-    }
-
-    class func rangeKeyAttribute() -> String {
-        return "_Index"
     }
 
     override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
@@ -88,7 +82,8 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
 //    EmItem._Employee_Number = 7777
 //    EmItem._Index = 3333
 //    EmItem._Department = "AA"
-//    EmItem._My_List = ["s" : ["3" : ["1":"2","4":"3"]]]
+// var _My_List : Any?
+// EmItem._My_List = ["s" : ["3" : ["1":"2","4":"3"]]]
 //
 //    dynamoDbObjectMapper.save(EmItem, completionHandler: {
 //
@@ -102,33 +97,33 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
 //    })
 //}
 
-
-func queryEMPLOYEE() {
-    
-    
-    
-    // 1) Configure the query
-    let queryExpression = AWSDynamoDBQueryExpression()
-    queryExpression.expressionAttributeNames = [
-        "_Corporation_Name" : "DS"
-    ]
-    
-    // 2) Make the query
-    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-    
-    
-    
-    dynamoDbObjectMapper.query(EMPLOYEE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
-        if error != nil {
-            print("The request failed. Error: \(String(describing: error))")
-        }
-        if output != nil {
-            for EMPLOYEe in output!.items {
-                let EMPLOYEEItem = EMPLOYEe as? EMPLOYEE
-                print("\(EMPLOYEEItem!)")
-            }
-        }
-        
-    }
-    
-}
+//
+//func queryEMPLOYEE() {
+//
+//
+//
+//    // 1) Configure the query
+//    let queryExpression = AWSDynamoDBQueryExpression()
+//    queryExpression.expressionAttributeNames = [
+//        "_Corporation_Name" : "DS"
+//    ]
+//
+//    // 2) Make the query
+//    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//
+//
+//
+//    dynamoDbObjectMapper.query(EMPLOYEE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+//        if error != nil {
+//            print("The request failed. Error: \(String(describing: error))")
+//        }
+//        if output != nil {
+//            for EMPLOYEe in output!.items {
+//                let EMPLOYEEItem = EMPLOYEe as? EMPLOYEE
+//                print("\(EMPLOYEEItem!)")
+//            }
+//        }
+//
+//    }
+//
+//}
