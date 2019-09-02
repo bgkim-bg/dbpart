@@ -14,9 +14,9 @@
 //
 //@objcMembers
 //class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
-//    
+//
 //    var _Index: NSNumber?
-//    var _Attendance : [String: NSNumber]?
+//    var _Board : [String: NSNumber]?
 //    var _Corporation_Name : String?
 //    var _Department : String?
 //    var _Employee_Name : String?
@@ -24,29 +24,29 @@
 //    var _Employee_Position : String?
 //    var _Headquarter : String?
 //    var _ID : String?
-//    
+//
 //    var _My_List : Any?
 //    var _my_lecture : String?
-//    
+//
 //    var _cong : [String : Any]?
-//    
-//    
+//
+//
 //    var _Phone_Number : NSNumber?
 //    var _PW : String?
 //    var _Score : [String : NSNumber]?
-//    
+//
 //    class func dynamoDBTableName() -> String {
 //        return "EMPLOYEE"
 //    }
-//    
+//
 //    class func hashKeyAttribute() -> String {
 //        return "_Employee_Number"
 //    }
-//    
+//
 //    class func rangeKeyAttribute() -> String {
 //        return "_Index"
 //    }
-//    
+//
 //    override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
 //        return [
 //            "_Index" : "Index",
@@ -65,5 +65,5 @@
 //            "_cong" : "cong"
 //        ]
 //    }
-//    
+//
 //}

@@ -20,8 +20,10 @@ class NavigationController: UINavigationController {
     override func viewDidLoad() {
 
 
+        
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+<<<<<<< HEAD
         let sample = DispatchQueue(label: "sample", attributes:.concurrent)
         sample.async {
 //            self.dbGetLecCate()

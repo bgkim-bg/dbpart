@@ -1,69 +1,98 @@
-////
-////  QNA.swift
-////  Shinple
-////
-////  Created by user on 28/08/2019.
-////  Copyright © 2019 veronica. All rights reserved.
-////
+//수정
+
+
+import Foundation
+import UIKit
+import AWSDynamoDB
+import AWSAuthCore
+
+
+@objcMembers
+class QNA: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
+
+    var _Index: NSNumber?
+    var _Board : Any?
+   
+    class func dynamoDBTableName() -> String {
+        return "QNA"
+    }
+
+    class func hashKeyAttribute() -> String {
+        return "_Index"
+    }
+
+
+    override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
+        return [
+            "_Index" : "Index",
+            "_Board" : "Board"
+        ]
+    }
+
+}
+
+func createQNA_Que() {
+
+    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+
+    let QueItem: QNA = QNA()
+    QueItem._Index = 6
+    QueItem._Board = ["Answer" : ["B_ans_cate" : "1", "B_ans_check" : "2", "B_ans_cont" : "3", "B_ans_date" : "4",  "B_ans_id" : "5", "B_ans_tit" : "6"],"Qusetion" : ["B_cate" : "1", "B_cont" : "2", "B_date" : "3", "B_id" : "4",  "B_tit" : "5"]]
+        
+        
+        
+    dynamoDbObjectMapper.save(QueItem, completionHandler: {
+
+        (error: Error?) -> Void in
+
+        if let error = error {
+            print("Amazon DynamoDB Save Error: \(error)")
+            return
+        }
+        print("An item was saved.")
+    })
+}
 //
-//import Foundation
-//import UIKit
-//import AWSDynamoDB
-//import AWSAuthCore
-//
-//
-//@objcMembers
-//class QNA: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
-//
-//    var _Index: NSNumber?
-//    var _Attendance : [String: NSNumber]?
-//    var _Corporation_Name : String?
-//    var _Department : String?
-//    var _Employee_Name : String?
-//    var _Employee_Number : NSNumber?
-//    var _Employee_Position : String?
-//    var _Headquarter : String?
-//    var _ID : String?
-//
-//    var _My_List : Any?
-//    var _my_lecture : String?
-//
-//    var _cong : [String : Any]?
-//
-//
-//    var _Phone_Number : NSNumber?
-//    var _PW : String?
-//    var _Score : [String : NSNumber]?
-//
-//    class func dynamoDBTableName() -> String {
-//        return "EMPLOYEE"
-//    }
-//
-//    class func hashKeyAttribute() -> String {
-//        return "_Employee_Number"
-//    }
-//
-//    class func rangeKeyAttribute() -> String {
-//        return "_Index"
-//    }
-//
-//    override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
-//        return [
-//            "_Index" : "Index",
-//            "_Attendance" : "Attendance",
-//            "_Corporation_Name" : "Corporation_Name",
-//            "_Department" : "Department",
-//            "_Employee_Name" : "Employee_Name",
-//            "_Employee_Number": "Employee_Number",
-//            "_Employee_Position" : "Employee_Position",
-//            "_Headquarter" : "Headquarter",
-//            "_ID" : "ID",
-//            "_My_List" : "My_List",
-//            "_Phone_Number" : "Phone_Number",
-//            "_PW" : "PW",
-//            "_Score" : "Score",
-//            "_cong" : "cong"
-//        ]
-//    }
-//
-//}
+
+
+func createAns_Que() {
+    
+    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+    
+    let AnsItem: QNA = QNA()
+    AnsItem._Index = 6
+    AnsItem._Board = ["Qusetion" : ["B_cate" : "1", "B_cont" : "2", "B_date" : "3", "B_id" : "4",  "B_tit" : "5"]]
+    
+    
+    
+    dynamoDbObjectMapper.save(AnsItem, completionHandler: {
+
+        (error: Error?) -> Void in
+
+        if let error = error {
+            print("Amazon DynamoDB Save Error: \(error)")
+            return
+        }
+        print("An item was saved.")
+    })
+}
+
+
+
+func updateQNA() {
+    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+    
+    
+    let upqItem: QNA = QNA();
+    
+    upqItem._Index = 6
+    upqItem._Board = ["Qusetion" : ["B_cate" : "7", "B_cont" : "8", "B_date" : "9", "B_id" : "10",  "B_tit" : "5"]]
+    
+    dynamoDbObjectMapper.save(upqItem, completionHandler: {(error: Error?) -> Void in
+        if let error = error {
+            print(" Amazon DynamoDB Save Error: \(error)")
+            return
+        }
+        print("An item was updated.")
+    })
+}
