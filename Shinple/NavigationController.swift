@@ -23,10 +23,10 @@ class NavigationController: UINavigationController {
         
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-<<<<<<< HEAD
         let sample = DispatchQueue(label: "sample", attributes:.concurrent)
         sample.async {
 //            self.dbGetLecCate()
+            self.dbGetMainLectures()
             print("m0")
             self.funcA()
             print("m1")
@@ -53,43 +53,70 @@ class NavigationController: UINavigationController {
         print("b1")
         b = "b"
     }
-    
-    
-    func dbGetLecCate() {
-        func parseListData(beforeParsed:NSArray) -> [String] {
-            var parsed: [String] = []
-            parsed.append("전체")
-            for item in beforeParsed {
-                parsed.append(item as! String)
-            }
-            return parsed
-        }
-        let queryExpression = initQueryExpression()
-        queryExpression.keyConditionExpression = "#LECTURE = :lecture"
-        queryExpression.expressionAttributeNames = ["#LECTURE":"LECTURE"]
-        queryExpression.expressionAttributeValues = [":lecture":"lecture"]
+    func dbGetMainLectures() {
+        
+        
+        let scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "#Duty = :Duty"
+        scanExpression.expressionAttributeNames = ["#Duty":"Duty"]
+        scanExpression.expressionAttributeValues = [":Duty":true]
         let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        dynamoDbObjectMapper.query(LEC_CATE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
-            if error != nil {
-                print("The request failed. Error: \(String(describing: error))")
+        dynamoDbObjectMapper.scan(LECTURE.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+            print(task.result)
+            if task.result != nil {
+                let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                print(paginatedOutput.items)
+                //use the results
+//                for item in paginatedOutput.items as! [LECTURE] {
+//                    print(item)
+//                }
+                
+                if ((task.error) != nil) {
+                    print("Error: \(task.error)")
+                }
+                
             }
-            if output != nil {
-                let data = output!.items.self[0] as! LEC_CATE
-                let firstCategory: [String] = ["전체", "보건", "개발", "어학", "자격증", "필수", "재무"]
-                var secondCategory: [[String]] = []
-                secondCategory.append(parseListData(beforeParsed:data._Care as! NSArray))
-                secondCategory.append(parseListData(beforeParsed:data._develop as! NSArray))
-                secondCategory.append(parseListData(beforeParsed:data._Culture as! NSArray))
-                secondCategory.append(parseListData(beforeParsed:data._English as! NSArray))
-                secondCategory.append(parseListData(beforeParsed:data._Certicate as! NSArray))
-                secondCategory.append(parseListData(beforeParsed:data._Duty as! NSArray))
-                secondCategory.append(parseListData(beforeParsed:data._Finance as! NSArray))
-                self.lec_cate = secondCategory
-                print(firstCategory, "after")
-                print(secondCategory, "after")
-            }
-        }
+            
+            return nil
+        })
     }
+    
+    
+//    func dbGetLecCate() {
+//        func parseListData(beforeParsed:NSArray) -> [String] {
+//            var parsed: [String] = []
+//            parsed.append("전체")
+//            for item in beforeParsed {
+//                parsed.append(item as! String)
+//            }
+//            return parsed
+//        }
+//        let queryExpression = initQueryExpression()
+//        queryExpression.keyConditionExpression = "#LECTURE = :lecture"
+//        queryExpression.expressionAttributeNames = ["#LECTURE":"LECTURE"]
+//        queryExpression.expressionAttributeValues = [":lecture":"lecture"]
+//        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//        dynamoDbObjectMapper.query(LEC_CATE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+//            if error != nil {
+//                print("The request failed. Error: \(String(describing: error))")
+//            }
+//            if output != nil {
+//                let data = output!.items.self[0] as! LEC_CATE
+//                let firstCategory: [String] = ["전체", "보건", "개발", "어학", "자격증", "필수", "재무"]
+//                var secondCategory: [[String]] = []
+//                secondCategory.append(parseListData(beforeParsed:data._Care as! NSArray))
+//                secondCategory.append(parseListData(beforeParsed:data._develop as! NSArray))
+//                secondCategory.append(parseListData(beforeParsed:data._Culture as! NSArray))
+//                secondCategory.append(parseListData(beforeParsed:data._English as! NSArray))
+//                secondCategory.append(parseListData(beforeParsed:data._Certicate as! NSArray))
+//                secondCategory.append(parseListData(beforeParsed:data._Duty as! NSArray))
+//                secondCategory.append(parseListData(beforeParsed:data._Finance as! NSArray))
+//                self.lec_cate = secondCategory
+//                print(firstCategory, "after")
+//                print(secondCategory, "after")
+//            }
+//        }
+//    }
 
 
 

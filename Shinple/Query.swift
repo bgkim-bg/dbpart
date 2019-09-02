@@ -109,9 +109,34 @@ func dbAddComment() {
     
 }
 
-func dbGetMainLectures() {
-//    dbGetLecCate()
-}
+//func dbGetMainLectures() {
+////    dbGetLecCate()
+//    // 1) Configure the query
+//    let queryExpression = AWSDynamoDBQueryExpression()
+//    queryExpression.keyConditionExpression = "#Duty = :Duty"
+//    queryExpression.expressionAttributeNames = [
+//        "#Duty": "Duty"
+//    ]
+//    queryExpression.expressionAttributeValues = [
+//        ":Duty" : true
+//    ]
+//    // 2) Make the query
+//    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//    dynamoDbObjectMapper.query(LECTURE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+//        if error != nil {
+//            print("The request failed. Error: \(String(describing: error))")
+//        }
+//        if output != nil {
+//            for lecture in output!.items {
+//                let lectureItem = lecture as? LECTURE
+//                print(lectureItem)
+//            }
+//        }
+//
+//    }
+//
+//
+//}
 
 func dbGetRecentLectures(type: [String]) {
     
