@@ -37,8 +37,8 @@ import AWSDynamoDB
  }
  :: 1.2 강의(대분류) 10개 -> LEC_CATE => Lecture -> 현재 날짜와 가까운 10개
  :: 1.2 인기강의 -> Lecture(!필수) 시청기록 Count 높은 TOP10
- :: 신규강의 -> Lecture등록날짜 기준 현재 날짜와 가까운 10개
- :: 필수강의 -> Lecture(필수) 기준 현재 날짜와 가까운 10개
+ :: key(신규강의) -> Lecture등록날짜 기준 현재 날짜와 가까운 10개
+ :: key(필수강의) -> Lecture(필수) 기준 현재 날짜와 가까운 10개
  
  :  func dbGetRecentLectures(type: [String]) -> {}
  :: 1.3 최근시청 강의 -> Employee -> Lecture : 시청중인 동영상(최대 10개, 마지막 갱신시각이랑 가까운)
@@ -72,13 +72,8 @@ import AWSDynamoDB
  :: 새 테이블(찜 기록: 가명) -> Employee에 해당하는 것들 생성(delete)
 
  */
-func parseListData(beforeParsed:NSArray) -> [String] {
-    var parsed: [String] = []
-    for item in beforeParsed {
-        parsed.append(item as! String)
-    }
-    return parsed
-}
+
+
 
 
 
@@ -93,7 +88,15 @@ func initQueryExpression() -> AWSDynamoDBQueryExpression {
 func dbUpdateLectureWatched() {
     
 }
+// 재생률
+// 강의 전체 시간
+// 강의 제목
+// 이미지 uri
+// 강의 내용
+// 동영상 uri
+// 찜하기 유무
 
+// 찜하기 바꾸기
 func dbAddJjim() {
     
 }
@@ -106,36 +109,8 @@ func dbAddComment() {
     
 }
 
-func dbGetLecCate() -> [String:Any]? {
-    let queryExpression = initQueryExpression()
-    queryExpression.keyConditionExpression = "#LECTURE = :lecture"
-    queryExpression.expressionAttributeNames = ["#LECTURE":"LECTURE"]
-    queryExpression.expressionAttributeValues = [":lecture":"lecture"]
-    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-    
-    var returnCategory: [String:Any] = [:]
-    dynamoDbObjectMapper.query(LEC_CATE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
-        if error != nil {
-            print("The request failed. Error: \(String(describing: error))")
-        }
-        if output != nil {
-            let data = output!.items.self[0] as! LEC_CATE
-            returnCategory["Care"] = parseListData(beforeParsed:data._Care as! NSArray)
-            returnCategory["Develop"] = parseListData(beforeParsed:data._develop as! NSArray)
-            returnCategory["Culture"] = parseListData(beforeParsed:data._Culture as! NSArray)
-            returnCategory["English"] = parseListData(beforeParsed:data._English as! NSArray)
-            returnCategory["Certicate"] = parseListData(beforeParsed:data._Certicate as! NSArray)
-            returnCategory["Duty"] = parseListData(beforeParsed:data._Duty as! NSArray)
-            returnCategory["Finance"] = parseListData(beforeParsed:data._Finance as! NSArray)
-            print(returnCategory, "b")
-        }
-    }
-    print(returnCategory, "a")
-    return nil
-}
-
 func dbGetMainLectures() {
-    dbGetLecCate()
+//    dbGetLecCate()
 }
 
 func dbGetRecentLectures(type: [String]) {
@@ -163,7 +138,6 @@ func dbDeleteJjim() {
 }
 
 func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
-    // MARK: ASYNC문제 해결해야함!!!!!!
     let queryExpression = AWSDynamoDBQueryExpression()
     let keys = whereQuery.keys
     queryExpression.expressionAttributeNames = [String:String]()
