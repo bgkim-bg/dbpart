@@ -1,3 +1,4 @@
+
 import Foundation
 import UIKit
 import AWSDynamoDB
@@ -7,19 +8,20 @@ import AWSAuthCore
 @objcMembers
 
 
-class Home_Need_Listen: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
+class AverageScore: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var _Index: NSNumber?
-    var _D_date : String?
+    var _Index : NSNumber?
+    var _Department : String?
     var _Emp_num : NSNumber?
-    var _L_cate : String?
     var _Lec_name : String?
-    var _Lec_num : NSNumber?
+    var _Lec_num : String?
+    var _Rate : NSNumber?
     var _S_cate : String?
-    var _Status : Bool?
+    var _U_id : String?
+    
     
     class func dynamoDBTableName() -> String {
-        return "Home_Need_Listen"
+        return "AverageScore"
     }
     
     class func hashKeyAttribute() -> String {
@@ -30,13 +32,13 @@ class Home_Need_Listen: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
         
         return [
             "_Index" : "Index",
-            "_D_date" : "D_date",
+            "_Department" : "Department",
             "_Emp_num" : "Emp_num",
-            "_L_cate" : "L_cate",
             "_Lec_name" : "Lec_name",
             "_Lec_num" : "Lec_num",
+            "_Rate": "Rate",
             "_S_cate" : "S_cate",
-            "_Status" : "Status"
+            "_U_id" : "U_id"
         ]
     }
     

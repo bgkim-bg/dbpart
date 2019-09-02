@@ -5,8 +5,6 @@
 //  Created by user on 28/08/2019.
 //  Copyright © 2019 veronica. All rights reserved.
 
-
-
 import Foundation
 import UIKit
 import AWSDynamoDB
@@ -18,7 +16,6 @@ import AWSAuthCore
 
 class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var _Attendance : [String: NSNumber]?
     var _Corporation_Name : String?
     var _Department : String?
     var _Employee_Name : String?
@@ -26,23 +23,8 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _Employee_Position : String?
     var _Headquarter : String?
     var _ID : String?
-    
-    
-    //var _My_List :Any?
-    var _My_List : [String : Any]?
-    
-    
-    
-    
     var _Phone_Number : NSNumber?
     var _PW : String?
-    var _Score : [String : NSNumber]?
-    var _Count : NSNumber?
-    
-    
-    
-    
-    
     
     
     class func dynamoDBTableName() -> String {
@@ -65,7 +47,6 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_Employee_Position" : "Employee_Position",
             "_Headquarter" : "Headquarter",
             "_ID" : "ID",
-            "_My_List" : "My_List",
             "_Phone_Number" : "Phone_Number",
             "_PW" : "PW"
         ]
