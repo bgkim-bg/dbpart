@@ -61,6 +61,10 @@ class NavigationController: UINavigationController {
             if task.result != nil {
                 let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
                 print(paginatedOutput)
+                for item in paginatedOutput {
+                    
+                }
+                
             }
             if ((task.error) != nil) {
                 print("Error: \(task.error)")

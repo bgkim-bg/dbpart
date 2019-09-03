@@ -9,13 +9,13 @@ import AWSAuthCore
 class LEC_CATE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var _LECTURE: String?
-    var _develop : Any?
-    var _Finance : Any?
-    var _Culture : Any?
-    var _English : Any?
-    var _Care : Any?
-    var _Certicate : Any?
-    var _Duty : Any?
+    var _개발 : Any?
+    var _금융 : Any?
+    var _문화 : Any?
+    var _외국어 : Any?
+    var _육아 : Any?
+    var _자격증 : Any?
+    var _필수 : Any?
     
     
     class func dynamoDBTableName() -> String {
@@ -29,13 +29,13 @@ class LEC_CATE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
         return [
             "_LECTURE" : "LECTURE",
-            "_develop" : "develop",
-            "_Finance" : "Finance",
-            "_Culture" : "Culture",
-            "_English" : "English",
-            "_Care": "Care",
-            "_Certicate" : "Certicate",
-            "_Duty" : "Duty"
+            "_개발" : "개발",
+            "_금융" : "금융",
+            "_문화" : "문화",
+            "_외국어" : "외국어",
+            "_육아": "육아",
+            "_자격증" : "자격증",
+            "_필수" : "필수"
         ]
     }
     
