@@ -53,7 +53,6 @@ class EMPLOYEE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
 
 }
-
 //func createEmployee() {
 //
 //    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()

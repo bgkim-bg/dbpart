@@ -12,14 +12,10 @@ import AWSDynamoDB
 class NavigationController: UINavigationController {
 
     //let img = UIImage(named: "tabbar")
-    
     var a: String?
     var b: String?
-    var lec_cate: [[String]]?
     
     override func viewDidLoad() {
-
-
         
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -205,6 +201,5 @@ class NavigationController: UINavigationController {
 //        }
 //    }
 
-
-
 }
+

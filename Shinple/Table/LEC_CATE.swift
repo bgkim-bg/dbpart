@@ -43,16 +43,8 @@ class LEC_CATE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
 
 func queryLEC_CATE() {
     let queryExpression1 = AWSDynamoDBQueryExpression()
-    queryExpression1.keyConditionExpression = "#LECTURE = :lecture"
     
-    
-    queryExpression1.expressionAttributeNames = [
-        "#LECTURE": "LECTURE"
-       
-    ]
-    queryExpression1.expressionAttributeValues = [
-        ":lecture" : "lecture"
-    ]
+    queryExpression1.scanIndexForward = 1
 
     
     

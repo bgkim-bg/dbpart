@@ -160,8 +160,8 @@ func dbGetQuestion() {
 func dbDeleteJjim() {
     
 }
-
-func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
+//
+//func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
 //    let queryExpression = AWSDynamoDBQueryExpression()
 //    let keys = whereQuery.keys
 //    queryExpression.expressionAttributeNames = [String:String]()
@@ -195,45 +195,45 @@ func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
 //            }
 //        }
 //    }
-}
-
+//}
 //
-////func queryLEC_CATE() {
 ////
-////    // 1) Configure the query
-////    let queryExpression1 = AWSDynamoDBQueryExpression()
-////    queryExpression1.keyConditionExpression = "#Lecture = :Lecture"
-////
-////    print(queryExpression1.keyConditionExpression)
-////
-////    queryExpression1.expressionAttributeNames = [
-////        "#Lecture": "Lecture",
-////    //    "#개발": "개발"
-////    ]
-////    queryExpression1.expressionAttributeValues = [
-////        ":Lecture" : "lecture",          //바뀐 부분 이제 쿼리문 일단은 먹힐꺼야
-////    //    ":개발" : ("C","JAVA","Python","HTML","CSS")
-////    ]
-////
-////    // 2) Make the query
-////    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-////
-////    dynamoDbObjectMapper.query(LEC_CATE.self, expression: queryExpression1) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
-////        print(output)
-////        if error != nil {
-////            print("The request failed. Error: \(String(describing: error))")
-////        }
-////        if output != nil {
-////            print(output!.items)
-////            for cate in output!.items {
-////                let cateItem = cate as? LEC_CATE
-////                print(type(of:cateItem!._금융))
-////                var dict:NSDictionary = cateItem!._금융 as! NSDictionary
-////                print(dict.allKeys)
-////
-////            }
-////        }
-////
-////    }
-////
-////}
+//////func queryLEC_CATE() {
+//////
+//////    // 1) Configure the query
+//////    let queryExpression1 = AWSDynamoDBQueryExpression()
+//////    queryExpression1.keyConditionExpression = "#Lecture = :Lecture"
+//////
+//////    print(queryExpression1.keyConditionExpression)
+//////
+//////    queryExpression1.expressionAttributeNames = [
+//////        "#Lecture": "Lecture",
+//////    //    "#개발": "개발"
+//////    ]
+//////    queryExpression1.expressionAttributeValues = [
+//////        ":Lecture" : "lecture",          //바뀐 부분 이제 쿼리문 일단은 먹힐꺼야
+//////    //    ":개발" : ("C","JAVA","Python","HTML","CSS")
+//////    ]
+//////
+//////    // 2) Make the query
+//////    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//////
+//////    dynamoDbObjectMapper.query(LEC_CATE.self, expression: queryExpression1) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+//////        print(output)
+//////        if error != nil {
+//////            print("The request failed. Error: \(String(describing: error))")
+//////        }
+//////        if output != nil {
+//////            print(output!.items)
+//////            for cate in output!.items {
+//////                let cateItem = cate as? LEC_CATE
+//////                print(type(of:cateItem!._금융))
+//////                var dict:NSDictionary = cateItem!._금융 as! NSDictionary
+//////                print(dict.allKeys)
+//////
+//////            }
+//////        }
+//////
+//////    }
+//////
+//////}
