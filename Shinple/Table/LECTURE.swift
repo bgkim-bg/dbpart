@@ -28,7 +28,6 @@ class LECTURE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     
     
-    
     class func dynamoDBTableName() -> String {
         return "LECTURE"
     }
@@ -41,8 +40,8 @@ class LECTURE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
         
         return [
             "_Lecture_num" : "Lecture_num",
-            "_Duty" : "Duty",
             "_E_date" : "E_date",
+            "_Duty" : "Duty",
             "_L_cate" : "L_cate",
             "_L_content" : "L_content",
             "_L_link_img": "L_link_img",
