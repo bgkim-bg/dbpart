@@ -78,21 +78,3 @@ func createAns_Que() {
 }
 
 
-
-func updateQNA() {
-    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-    
-    
-    let upqItem: QNA = QNA();
-    
-    upqItem._Index = 6
-    upqItem._Board = ["Qusetion" : ["B_cate" : "7", "B_cont" : "8", "B_date" : "9", "B_id" : "10",  "B_tit" : "5"]]
-    
-    dynamoDbObjectMapper.save(upqItem, completionHandler: {(error: Error?) -> Void in
-        if let error = error {
-            print(" Amazon DynamoDB Save Error: \(error)")
-            return
-        }
-        print("An item was updated.")
-    })
-}

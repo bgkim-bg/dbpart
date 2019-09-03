@@ -79,9 +79,6 @@ func initQueryExpression() -> AWSDynamoDBQueryExpression {
     return queryExpression
 }
 
-func dbUpdateLectureWatched() {
-    
-}
 // 재생률
 // 강의 전체 시간
 // 강의 제목
@@ -91,17 +88,6 @@ func dbUpdateLectureWatched() {
 // 찜하기 유무
 
 // 찜하기 바꾸기
-func dbAddJjim() {
-    
-}
-
-func dbAddRate() {
-    
-}
-
-func dbAddComment() {
-    
-}
 
 //func dbGetMainLectures() {
 ////    dbGetLecCate()
@@ -136,18 +122,13 @@ func dbAddComment() {
 func dbGetAlertNotice() {
     
 }
-
 func dbGetAlertNecessaryLecture() {
 }
-
 
 func dbGetQuestion() {
     
 }
 
-func dbDeleteJjim() {
-    
-}
 //
 //func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
 //    let queryExpression = AWSDynamoDBQueryExpression()

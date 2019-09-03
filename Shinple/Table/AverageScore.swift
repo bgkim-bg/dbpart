@@ -14,7 +14,7 @@ class AverageScore: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _Department : String?
     var _Emp_num : NSNumber?
     var _Lec_name : String?
-    var _Lec_num : String?
+    var _Lec_num : NSNumber?
     var _Rate : NSNumber?
     var _S_cate : String?
     var _U_id : String?

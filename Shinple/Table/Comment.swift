@@ -7,10 +7,9 @@ import AWSAuthCore
 @objcMembers
 class Comment: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var _C_content : NSNumber?
+    var _C_content : String?
     var _C_date : String?
     var _L_num : NSNumber?
-    var _L_rate : String?
     var _U_id : String?
     
     
@@ -28,7 +27,6 @@ class Comment: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_C_content" : "C_content",
             "_C_date" : "C_date",
             "_L_num" : "L_num",
-            "_L_rate" : "L_rate",
             "_U_id" : "U_id"
         ]
     }
