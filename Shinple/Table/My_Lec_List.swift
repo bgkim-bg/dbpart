@@ -15,10 +15,14 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _L_link_img : String?
     var _L_link_video : String?
     var _L_name : String?
-    var _L_num : NSNumber?
-    var _S_num : NSNumber?
+    var _Lecture_num : NSNumber?
+    var _S_cate_num : NSNumber?
     var _U_length : NSNumber?
     var _W_date : String?
+    
+    
+    var _E_date : String?
+    var _Duty : NSNumber?
     
     class func dynamoDBTableName() -> String {
         return "My_Lec_List"
@@ -39,10 +43,12 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_L_link_img" : "L_link_img",
             "_L_link_video" : "L_link_video",
             "_L_name" : "L_name",
-            "_L_num" : "L_num",
-            "_S_num" : "S_num",
+            "_Lecture_num" : "Lecture_num",
+            "_S_cate_num" : "S_cate_num",
             "_U_length" : "U_length",
-            "_W_date" : "W_date"
+            "_W_date" : "W_date",
+            "_E_date" : "E_date",
+            "_Duty" : "Duty"
         ]
     }
     
