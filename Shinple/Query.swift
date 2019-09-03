@@ -138,9 +138,6 @@ func dbAddComment() {
 //
 //}
 
-func dbGetRecentLectures(type: [String]) {
-    
-}
 
 func dbGetAlertNotice() {
     
