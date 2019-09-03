@@ -10,7 +10,7 @@ import AWSAuthCore
 class LECTURE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var _Lecture_num: NSNumber?
-    var _Duty : Bool?
+    var _Duty : NSNumber?
     var _E_date : String?
     var _L_cate : String?
     var _L_content : String?
@@ -23,7 +23,8 @@ class LECTURE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _S_cate_num : NSNumber?
     var _U_date : String?
     var _L_length : NSNumber?
-    
+    var _L_count : NSNumber?
+
     
     
     
@@ -40,8 +41,8 @@ class LECTURE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
         
         return [
             "_Lecture_num" : "Lecture_num",
-            "_Duty" : "Duty",
             "_E_date" : "E_date",
+            "_Duty" : "Duty",
             "_L_cate" : "L_cate",
             "_L_content" : "L_content",
             "_L_link_img": "L_link_img",
@@ -52,6 +53,7 @@ class LECTURE: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_S_cate" : "S_cate",
             "_S_cate_num" : "S_cate_num",
             "_U_date" : "U_date",
+            "_L_count" : "L_count",
             "_L_length" : "L_length"
         ]
     }

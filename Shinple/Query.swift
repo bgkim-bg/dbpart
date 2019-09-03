@@ -162,39 +162,39 @@ func dbDeleteJjim() {
 }
 
 func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
-    let queryExpression = AWSDynamoDBQueryExpression()
-    let keys = whereQuery.keys
-    queryExpression.expressionAttributeNames = [String:String]()
-    queryExpression.expressionAttributeValues = [String:Any]()
-    var expression = ""
-    var index = 0
-    for key in keys {
-        let key1 = "#"+key
-        let key2 = ":"+key
-        expression = key1+" "+operatorText[index]+" "+key2+" "
-        queryExpression.expressionAttributeNames?[key1] = key
-        queryExpression.expressionAttributeValues?[key2] = whereQuery[key]
-        index += 1
-        print(key)
-    }
-    
-    
-    queryExpression.keyConditionExpression = expression
-    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-    dynamoDbObjectMapper.query(EMPLOYEE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
-        if error != nil {
-            print("The request failed. Error: \(String(describing: error))")
-        }
-        if output != nil {
-            print(output!.items)
-            for employee in output!.items {
-                let employeeItem = employee as? EMPLOYEE
-                var dict:NSDictionary = employeeItem!._My_List as! NSDictionary
-                var dic2 = dict.value(forKey: "my_lecture") as! NSDictionary
-                print(dic2.allValues, dic2.allValues[2])
-            }
-        }
-    }
+//    let queryExpression = AWSDynamoDBQueryExpression()
+//    let keys = whereQuery.keys
+//    queryExpression.expressionAttributeNames = [String:String]()
+//    queryExpression.expressionAttributeValues = [String:Any]()
+//    var expression = ""
+//    var index = 0
+//    for key in keys {
+//        let key1 = "#"+key
+//        let key2 = ":"+key
+//        expression = key1+" "+operatorText[index]+" "+key2+" "
+//        queryExpression.expressionAttributeNames?[key1] = key
+//        queryExpression.expressionAttributeValues?[key2] = whereQuery[key]
+//        index += 1
+//        print(key)
+//    }
+//
+//
+//    queryExpression.keyConditionExpression = expression
+//    let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//    dynamoDbObjectMapper.query(EMPLOYEE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+//        if error != nil {
+//            print("The request failed. Error: \(String(describing: error))")
+//        }
+//        if output != nil {
+//            print(output!.items)
+//            for employee in output!.items {
+//                let employeeItem = employee as? EMPLOYEE
+//                var dict:NSDictionary = employeeItem!._My_List as! NSDictionary
+//                var dic2 = dict.value(forKey: "my_lecture") as! NSDictionary
+//                print(dic2.allValues, dic2.allValues[2])
+//            }
+//        }
+//    }
 }
 
 //
