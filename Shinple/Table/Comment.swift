@@ -7,10 +7,10 @@ import AWSAuthCore
 @objcMembers
 class Comment: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var _C_content : NSNumber?
+    var _C_content : String?
     var _C_date : String?
     var _L_num : NSNumber?
-    var _L_rate : String?
+    var _L_rate : NSNumber?
     var _U_id : String?
     
     

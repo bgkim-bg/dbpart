@@ -13,7 +13,7 @@ class Answer: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _Index : NSNumber?
     var _A_ans_cate : String?
     var _A_ans_check : NSNumber?
-    var _A_ans_cont : String?
+    var _A_content : String?
     var _A_ans_date : String?
     var _A_ans_id : String?
     var _A_ans_tit : String?
@@ -33,10 +33,11 @@ class Answer: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_Index" : "Index",
             "_A_ans_cate" : "A_ans_cate",
             "_A_ans_check" : "A_ans_check",
-            "_A_ans_cont" : "A_ans_cont",
+            "_A_content" : "A_content",
             "_A_ans_date" : "A_ans_date",
             "_A_ans_id": "A_ans_id",
-            "_A_time" : "A_time"
+            "_A_time" : "A_time",
+            "_A_tit" : "A_tit"
         ]
     }
     

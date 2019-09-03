@@ -8,7 +8,7 @@ import AWSAuthCore
 @objcMembers
 class OrganizationChart: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var _Index: NSNumber?
+    var _CompanyName: String?
     var _Headquarter : Any?
     
     class func dynamoDBTableName() -> String {
