@@ -7,7 +7,7 @@ import AWSAuthCore
 @objcMembers
 class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var _Index : NSNumber?
+    var _My_num : NSNumber?
     var _E_num : NSNumber?
     var _C_status : NSNumber?
     var _J_status : NSNumber?
@@ -19,8 +19,6 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _S_cate_num : NSNumber?
     var _U_length : NSNumber?
     var _W_date : String?
-    
-    
     var _E_date : String?
     var _Duty : NSNumber?
     
@@ -29,13 +27,13 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
     
     class func hashKeyAttribute() -> String {
-        return "_Index"
+        return "_My_num"
     }
     
     override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
         
         return [
-            "_Index" : "Index",
+            "_My_num" : "My_num",
             "_E_num" : "E_num",
             "_C_status" : "C_status",
             "_J_status" : "J_status",

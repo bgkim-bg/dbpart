@@ -8,12 +8,14 @@
 
 import UIKit
 import AWSDynamoDB
+import AWSAuthCore
 
 class NavigationController: UINavigationController {
 
     //let img = UIImage(named: "tabbar")
     var a: String?
     var b: String?
+    
     
     override func viewDidLoad() {
         
@@ -23,7 +25,12 @@ class NavigationController: UINavigationController {
         sample.async {
 //            self.dbGetLecCate()
 //            self.dbGetMainLectures()
-            self.dbGetRecentLectures(e_num: 110002)
+//            self.dbGetRecentLectures(e_num: 110002)
+//            let something: My_Lec_List = My_Lec_List()
+//            something._Lecture_num = 11001
+//            something._S_cate_num = 11000
+//            self.dbGetLectureDetail(lecture: something)
+            
             print("m0")
             self.funcA()
             print("m1")
@@ -34,8 +41,6 @@ class NavigationController: UINavigationController {
         
         self.navigationBar.tintColor = .white
         self.navigationBar.backgroundColor = UIColor(red: 26/255, green: 2/255, blue: 74/255, alpha:1)
-        //self.navigationBar.setBackgroundImage(img, for: .default)
-        //self.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationBar.shadowImage = UIImage()
     }
     
@@ -49,29 +54,164 @@ class NavigationController: UINavigationController {
         print("b1")
         b = "b"
     }
-    
-    
-    func dbGetRecentLectures(e_num: NSNumber) {
-        let scanExpression = AWSDynamoDBScanExpression()
-        scanExpression.filterExpression = "E_num = :E_num"
-        scanExpression.projectionExpression = "L_name, C_status"
-        scanExpression.expressionAttributeValues = [":E_num":Int(truncating: e_num)]
-        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-        dynamoDbObjectMapper.scan(My_Lec_List.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
-            if task.result != nil {
-                let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
-                print(paginatedOutput)
-        
-                
-            }
-            if ((task.error) != nil) {
-                print("Error: \(task.error)")
-            }
-            return nil
-        })
-        
+    func dbUpdateLectureWatched() {
         
     }
+    func dbAddRate() {
+        
+    }
+    func dbAddComment() {
+        
+    }
+    
+//    func dbGetLectureDetail(lecture:Any) {
+//        let s_cate_num: NSNumber?
+//        let lecture_num: NSNumber?
+//        if type(of: lecture) == LECTURE.self {
+//            var casted = lecture as! LECTURE
+//            s_cate_num = casted._S_cate_num
+//            lecture_num = casted._Lecture_num
+//        } else {
+//            var casted = lecture as! My_Lec_List
+//            s_cate_num = casted._S_cate_num
+//            lecture_num = casted._Lecture_num
+//        }
+//        let scanExpression = AWSDynamoDBScanExpression()
+//        scanExpression.filterExpression = "S_cate_num = :S_cate_num"
+//        scanExpression.projectionExpression = "Duty, E_date, L_cate, L_content, L_length, L_link_img, L_link_video, L_name, L_rate, L_teacher, Lecture_num, S_cate, S_cate_num, U_date, L_count"
+//        scanExpression.expressionAttributeValues = [":S_cate_num":Int(truncating: s_cate_num!)]
+//        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//        dynamoDbObjectMapper.scan(LECTURE.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+//            if task.result != nil {
+//                let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+//                var lectureRelated = [LECTURE]()
+//                print(paginatedOutput)
+//                for item in paginatedOutput.items as! [LECTURE] {
+//                    if Int(truncating: item._Lecture_num!) == Int(truncating: lecture_num!) {
+//                        continue
+//                    }
+//                    var inserted = false
+//                    var index = 0
+//                    for related in lectureRelated {
+//                        if Int(truncating: item._Lecture_num!) < Int(truncating: related._Lecture_num!) {
+//                            lectureRelated.insert(item, at: index)
+//                            inserted = true
+//                            break
+//                        }
+//                        index += 1
+//                    }
+//                    if !inserted {
+//                        lectureRelated.append(item)
+//                    }
+//                }
+//                print("related", lectureRelated)
+//            }
+//            if ((task.error) != nil) {
+//                print("Error: \(task.error)")
+//            }
+//            return nil
+//        })
+//
+//        let scanExpressionComment = AWSDynamoDBScanExpression()
+//        scanExpressionComment.filterExpression = "L_num = :L_num"
+//        scanExpressionComment.projectionExpression = "L_num, C_content, C_date, U_id"
+//        scanExpressionComment.expressionAttributeValues = [":L_num":Int(truncating: lecture_num!)]
+//        print(lecture_num, "lecture_num")
+//        let dynamoDbObjectMapperComment = AWSDynamoDBObjectMapper.default()
+//        dynamoDbObjectMapperComment.scan(Comment.self, expression: scanExpressionComment).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+//            if task.result != nil {
+//                let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+//                var lectureComment = [Comment]()
+//                print(paginatedOutput.items)
+//                var indexAry = [Double]()
+//                let formatter = DateFormatter()
+//                formatter.dateFormat = "yyyy-MM-dd"
+//                let today = Date()
+//                for item in paginatedOutput.items as! [Comment] {
+//                    let upload = formatter.date(from: item._C_date!)
+//                    let interval = upload?.timeIntervalSince(today) as! Double
+//                    var inserted = false
+//                    var index = 0
+//                    for indexItem in indexAry {
+//                        if interval >= indexItem {
+//                            lectureComment.insert(item, at: index)
+//                            indexAry.insert(interval, at: index)
+//                            inserted = true
+//                            break
+//                        }
+//                        index += 1
+//                    }
+//                    if !inserted {
+//                        lectureComment.append(item)
+//                        indexAry.append(interval)
+//                    }
+//                }
+//                print("related", lectureComment)
+//            }
+//            if ((task.error) != nil) {
+//                print("Error: \(task.error)")
+//            }
+//            return nil
+//        })
+//
+//    }
+//
+//    func dbAddJjimMyLectureListSample(type:NSNumber, index: Int) {
+//        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//        let uMyLectureList : My_Lec_List = sample![index]
+//        uMyLectureList._J_status = type
+//        dynamoDbObjectMapper.save(uMyLectureList, completionHandler: {(error: Error?) -> Void in
+//        if let error = error {
+//        print(" Amazon DynamoDB Save Error: \(error)")
+//        return
+//        }
+//        print("An item was updated.")
+//        })
+//    }
+//
+//    func dbGetRecentLectures(e_num: NSNumber) {
+//        let scanExpression = AWSDynamoDBScanExpression()
+//        scanExpression.filterExpression = "E_num = :E_num"
+//        scanExpression.projectionExpression = "My_num, E_num, C_status, J_status, L_length, L_link_img, L_link_video, L_name, L_num, S_num, U_length, W_date"
+//        scanExpression.expressionAttributeValues = [":E_num":Int(truncating: e_num)]
+//        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//        dynamoDbObjectMapper.scan(My_Lec_List.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+//            if task.result != nil {
+//                let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+//                var indexAry = [Double]()
+//                let formatter = DateFormatter()
+//                var lectureMy = [My_Lec_List]()
+//                formatter.dateFormat = "yyyy-MM-dd"
+//                let today = Date()
+//                for item in paginatedOutput.items as! [My_Lec_List] {
+//                    print(item)
+//                    let upload = formatter.date(from: item._W_date!)
+//                    let interval = upload?.timeIntervalSince(today) as! Double
+//                    var inserted = false
+//                    var index = 0
+//                    for indexItem in indexAry {
+//                        if interval >= indexItem {
+//                            lectureMy.insert(item, at: index)
+//                            indexAry.insert(interval, at: index)
+//                            inserted = true
+//                            break
+//                        }
+//                    index += 1
+//                    }
+//                    if !inserted {
+//                        lectureMy.append(item)
+//                        indexAry.append(interval)
+//                    }
+//                    print("hash")
+//                }
+//                print(lectureMy)
+//            }
+//            if ((task.error) != nil) {
+//                print("Error: \(task.error)")
+//            }
+//            return nil
+//        })
+//    }
     
 //    func dbGetMainLectures() {
 //        func parseListData(beforeParsed:NSArray) -> [String] {
