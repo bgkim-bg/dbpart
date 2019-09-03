@@ -8,12 +8,14 @@
 
 import UIKit
 import AWSDynamoDB
+import AWSAuthCore
 
 class NavigationController: UINavigationController {
 
     //let img = UIImage(named: "tabbar")
     var a: String?
     var b: String?
+    
     
     override func viewDidLoad() {
         
@@ -23,7 +25,9 @@ class NavigationController: UINavigationController {
         sample.async {
 //            self.dbGetLecCate()
 //            self.dbGetMainLectures()
-            self.dbGetRecentLectures(e_num: 110002)
+//            self.dbGetRecentLectures(e_num: 110002)
+            let something: My_Lec_List = My_Lec_List()
+            self.dbGetLectureDetail(lecture: something)
             print("m0")
             self.funcA()
             print("m1")
@@ -50,25 +54,84 @@ class NavigationController: UINavigationController {
         b = "b"
     }
     
+    func dbGetLectureDetail(lecture:Any) {
+        print(type(of: lecture))
+        print(type(of: LECTURE.self))
+        if type(of: lecture) == LECTURE.self {
+            print("Lecture ===")
+            
+            
+            
+        } else {
+            print("My_Lec_List ===")
+            
+            
+            
+        }
+        // my_lec_list :
+        // letcture : s_cate_num
+        
+        
+        
+        
+        
+    }
+
+//    func dbAddJjimMyLectureListSample(type:NSNumber, index: Int) {
+//        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+//        let uMyLectureList : My_Lec_List = sample![index]
+//        uMyLectureList._J_status = type
+//        dynamoDbObjectMapper.save(uMyLectureList, completionHandler: {(error: Error?) -> Void in
+//        if let error = error {
+//        print(" Amazon DynamoDB Save Error: \(error)")
+//        return
+//        }
+//        print("An item was updated.")
+//        })
+//    }
     
     func dbGetRecentLectures(e_num: NSNumber) {
         let scanExpression = AWSDynamoDBScanExpression()
         scanExpression.filterExpression = "E_num = :E_num"
-        scanExpression.projectionExpression = "L_name, C_status"
+        scanExpression.projectionExpression = "My_num, E_num, C_status, J_status, L_length, L_link_img, L_link_video, L_name, L_num, S_num, U_length, W_date"
         scanExpression.expressionAttributeValues = [":E_num":Int(truncating: e_num)]
         let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         dynamoDbObjectMapper.scan(My_Lec_List.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
             if task.result != nil {
                 let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
-                print(paginatedOutput)
+                var indexAry = [Double]()
+                let formatter = DateFormatter()
+                var lectureMy = [My_Lec_List]()
+                formatter.dateFormat = "yyyy-MM-dd"
+                let today = Date()
+                for item in paginatedOutput.items as! [My_Lec_List] {
+                    print(item)
+                    let upload = formatter.date(from: item._W_date!)
+                    let interval = upload?.timeIntervalSince(today) as! Double
+                    var inserted = false
+                    var index = 0
+                    for indexItem in indexAry {
+                        if interval >= indexItem {
+                            lectureMy.insert(item, at: index)
+                            indexAry.insert(interval, at: index)
+                            inserted = true
+                            break
+                        }
+                    index += 1
+                    }
+                    if !inserted {
+                        lectureMy.append(item)
+                        indexAry.append(interval)
+                    }
+                    print("hash")
+                }
+                print(lectureMy)
             }
             if ((task.error) != nil) {
                 print("Error: \(task.error)")
             }
             return nil
         })
-        
-        
     }
     
 //    func dbGetMainLectures() {
