@@ -125,9 +125,6 @@ func dbGetAlertNotice() {
 func dbGetAlertNecessaryLecture() {
 }
 
-func dbGetQuestion() {
-    
-}
 
 //
 //func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {

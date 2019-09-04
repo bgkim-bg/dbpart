@@ -10,37 +10,34 @@ import AWSAuthCore
 
 class Answer: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var _Index : NSNumber?
-    var _A_ans_cate : String?
-    var _A_ans_check : NSNumber?
+    var _A_num : NSNumber?
+    var _A_cate : String?
     var _A_content : String?
-    var _A_ans_date : String?
-    var _A_ans_id : String?
-    var _A_ans_tit : String?
+    var _A_date : String?
+    var _Q_id : String? // need to insert field
     var _A_time : String?
-    var _Q_id : String?
+    var _A_tit : String?
     
     class func dynamoDBTableName() -> String {
         return "ANSWER"
     }
     
     class func hashKeyAttribute() -> String {
-        return "_Index"
+        return "_A_num"
     }
     
     override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
         
         return [
-            "_Index" : "Index",
-            "_A_ans_cate" : "A_ans_cate",
-            "_A_ans_check" : "A_ans_check",
+            "_A_num" : "A_num",
+            "_A_cate" : "A_cate",
             "_A_content" : "A_content",
-            "_A_ans_date" : "A_ans_date",
-            "_A_ans_id": "A_ans_id",
+            "_A_date" : "A_date",
+            "_Q_id": "Q_id",
             "_A_time" : "A_time",
-            "_A_tit" : "A_tit",
             "_A_tit" :"A_tit",
             "_Q_id" : "Q_id"
+
         ]
     }
     

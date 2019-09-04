@@ -10,9 +10,10 @@ import AWSAuthCore
 
 class Question : AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
-    var _Index : NSNumber?
+    var _Q_num : NSNumber?
     var _Q_cate : String?
-    var _Q_cont : String?
+    var _Q_check : NSNumber?
+    var _Q_content : String?
     var _Q_date : String?
     var _Q_id : String?
     var _Q_time : String?
@@ -23,15 +24,16 @@ class Question : AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     }
     
     class func hashKeyAttribute() -> String {
-        return "_Index"
+        return "_Q_num"
     }
     
     override class func jsonKeyPathsByPropertyKey() -> [AnyHashable: Any] {
         
         return [
-            "_Index" : "Index",
+            "_Q_num" : "Q_num",
             "_Q_cate" : "Q_cate",
-            "_Q_cont" : "Q_cont",
+            "_Q_check" : "Q_check",
+            "_Q_content" : "Q_content",
             "_Q_date" : "Q_date",
             "_Q_id" : "Q_id",
             "_Q_time": "Q_time",
