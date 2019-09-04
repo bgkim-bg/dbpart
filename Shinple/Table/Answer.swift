@@ -8,7 +8,7 @@ import AWSAuthCore
 @objcMembers
 
 
-class Answer: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
+class ANSWER: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var _A_num : NSNumber?
     var _A_cate : String?

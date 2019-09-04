@@ -32,6 +32,8 @@ class NavigationController: UINavigationController {
 //            self.dbGetLectureDetail(lecture: something)
 //            self.dbAddComment(l_num: 11001, comment: "싫어요", date: "2018-08-12", u_id: " bkg123")
 //            self.dbAddQuestion(q_cate: "사용장애", q_content: "동영상 재생이 불가합니다", q_date: "2019-12-31", q_id: "kisung135", q_time: "22:24", q_tit: "동영상 재생 문제입니다")
+//            self.dbGetMainLectures(e_num: 110002)
+            self.dbGetQuestion(q_id: "wldn03")
             print("m0")
             self.funcA()
             print("m1")
@@ -118,17 +120,20 @@ class NavigationController: UINavigationController {
                 }
                 print("questions", questions)
                 let scanAnsweredQuestion = AWSDynamoDBScanExpression()
+                print(q_id, "q_id")
                 scanAnsweredQuestion.filterExpression = "Q_id = :Q_id"
                 scanAnsweredQuestion.projectionExpression = "A_cate, A_content, A_date, A_time, A_tit, Q_id"
                 scanAnsweredQuestion.expressionAttributeValues = [":Q_id":q_id]
                 let dynamoDbObjectMapperAnsweredQuestion = AWSDynamoDBObjectMapper.default()
-                dynamoDbObjectMapperAnsweredQuestion.scan(Answer.self, expression: scanExpressionQuestion).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+                dynamoDbObjectMapperAnsweredQuestion.scan(ANSWER.self, expression: scanExpressionQuestion).continueWith(block: { (task:AWSTask!) -> AnyObject? in
                     if task.result != nil {
                         let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
-                        for item in paginatedOutput.items as! [Answer] {
+                        for item2 in paginatedOutput.items as! [ANSWER] {
+                            print(item2, "answer")
                             for (index, question) in questions.enumerated() {
-                                if (question as AnyObject)._Q_tit == item._A_tit {
-                                    questions.insert(item, at: index)
+                                if (question as AnyObject)._Q_tit == item2._A_tit {
+                                    questions.insert(item2, at: index)
+                                    print("inserted......", item2)
                                 }
                             }
                         }
@@ -373,7 +378,7 @@ class NavigationController: UINavigationController {
         var toLectures = [String:[Any]]()
         let scanExpression = AWSDynamoDBScanExpression()
         scanExpression.filterExpression = "E_num = :E_num"
-        scanExpression.projectionExpression = "My_num, E_num, C_status, J_status, L_length, L_link_img, L_link_video, L_name, L_num, S_num, U_length, W_date"
+        scanExpression.projectionExpression = "My_num, C_status, Duty, E_date, E_num, J_status, L_length, L_link_img, L_link_video, L_name, Lecture_num, S_cate_num, U_length, W_date"
         scanExpression.expressionAttributeValues = [":E_num":Int(truncating: e_num)]
         let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
                 dynamoDbObjectMapper.scan(My_Lec_List.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
@@ -385,16 +390,25 @@ class NavigationController: UINavigationController {
                                     toLectures[key] = fromLectures[key]
                                     continue
                                 }
+//                                print("hello!!!!", fromLectures[key], key)
+                                
+                                var temp = [Any]()
                                 for data in fromLectures[key]! {
+//                                    print("world!!", data)
+//                                    print("is same??", (data as AnyObject)._Lecture_num, item._Lecture_num)
                                     if (data as AnyObject)._Lecture_num == item._Lecture_num {
-                                        toLectures[key]?.append(item)
+                                        print("same!!", key, (data as AnyObject)._Lecture_num, item._Lecture_num)
+                                        temp.append(item)
+                                        print(toLectures)
                                     } else {
-                                        toLectures[key]?.append(data)
+//                                        print("not same!!", key, (data as AnyObject)._Lecture_num, item._Lecture_num)
+                                        temp.append(data)
                                     }
                                 }
+                                toLectures[key] = temp
                             }
                         }
-                        print("resolved item....", print(toLectures))
+                        print("resolved item....", toLectures)
                     }
                     if ((task.error) != nil) {
                         print("Error: \(task.error)")
@@ -508,7 +522,8 @@ class NavigationController: UINavigationController {
                 lectureResult["english"] = lectureEnglish
                 lectureResult["certicate"] = lectureCerticate
 
-                print(lectureResult)
+//                print(lectureResult)
+                print("function started")
                 self.dbGetMyLecturesFromMainLectures(e_num: e_num, fromLectures: lectureResult)
                 if ((task.error) != nil) {
                     print("Error: \(task.error)")
@@ -521,28 +536,31 @@ class NavigationController: UINavigationController {
     }
     
     
-//    func dbGetLecCate() {
-//        func parseListData(beforeParsed:NSArray) -> [String] {
-//            var parsed: [String] = []
-//            parsed.append("전체")
-//            for item in beforeParsed {
-//                parsed.append(item as! String)
-//            }
-//            return parsed
-//        }
-//        let queryExpression = initQueryExpression()
-//        queryExpression.keyConditionExpression = "#LECTURE = :lecture"
-//        queryExpression.expressionAttributeNames = ["#LECTURE":"LECTURE"]
-//        queryExpression.expressionAttributeValues = [":lecture":"lecture"]
-//        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-//        dynamoDbObjectMapper.query(LEC_CATE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
-//            if error != nil {
-//                print("The request failed. Error: \(String(describing: error))")
-//            }
-//            if output != nil {
-//                let data = output!.items.self[0] as! LEC_CATE
-//                let firstCategory: [String] = ["전체", "보건", "개발", "어학", "자격증", "필수", "재무"]
-//                var secondCategory: [[String]] = []
+    func dbGetLecCate() {
+        func parseListData(beforeParsed:NSArray) -> [String] {
+            var parsed: [String] = []
+            parsed.append("전체")
+            for item in beforeParsed {
+                parsed.append(item as! String)
+            }
+            return parsed
+        }
+        let queryExpression = initQueryExpression()
+        queryExpression.keyConditionExpression = "#LECTURE = :lecture"
+        queryExpression.expressionAttributeNames = ["#LECTURE":"LECTURE"]
+        queryExpression.expressionAttributeValues = [":lecture":"lecture"]
+        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDbObjectMapper.query(LEC_CATE.self, expression: queryExpression) { (output: AWSDynamoDBPaginatedOutput?, error: Error?) in
+            if error != nil {
+                print("The request failed. Error: \(String(describing: error))")
+            }
+            if output != nil {
+                let data = output!.items.self[0] as! LEC_CATE
+                let firstCategory: [String] = ["전체", "보건", "개발", "어학", "자격증", "필수", "재무"]
+                var secondCategory = [[String]]()
+//                for cate in firstCategory {
+//                    secondCategory.append(parseListData(beforeParsed:data[cate] as! NSArray))
+//                }
 //                secondCategory.append(parseListData(beforeParsed:data._Care as! NSArray))
 //                secondCategory.append(parseListData(beforeParsed:data._develop as! NSArray))
 //                secondCategory.append(parseListData(beforeParsed:data._Culture as! NSArray))
@@ -551,11 +569,11 @@ class NavigationController: UINavigationController {
 //                secondCategory.append(parseListData(beforeParsed:data._Duty as! NSArray))
 //                secondCategory.append(parseListData(beforeParsed:data._Finance as! NSArray))
 //                self.lec_cate = secondCategory
-//                print(firstCategory, "after")
-//                print(secondCategory, "after")
-//            }
-//        }
-//    }
+                print(firstCategory, "after")
+                print(secondCategory, "after")
+            }
+        }
+    }
 
 }
 
