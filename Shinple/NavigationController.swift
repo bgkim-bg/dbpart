@@ -32,8 +32,8 @@ class NavigationController: UINavigationController {
 //            self.dbGetLectureDetail(lecture: something)
 //            self.dbAddComment(l_num: 11001, comment: "싫어요", date: "2018-08-12", u_id: " bkg123")
             //            self.dbGetMainLectures(e_num: 110002)
-//            self.dbAddQuestion(q_cate: "사용문의", q_content: "동영상 재생이 불가합니다", q_date: "2020-01-01", q_id: "llllll135", q_time: "22:24", q_tit: "동영상 재생 문제입니다")
-//            self.dbGetQuestion(q_id: "wldn03")
+//            self.dbAddQuestion(q_cate: "사용장애", q_content: "do you know ggimchi?", q_date: "2019-09-04", q_id: "1100012", q_time: "15:35", q_tit: "do you know ggimchi?")
+//            self.dbGetQuestion(q_id: "1100012")
 //            let sampleLecture:LECTURE = LECTURE()
 //            sampleLecture._Lecture_num = 12002
 //            sampleLecture._Duty = true
@@ -682,15 +682,15 @@ class NavigationController: UINavigationController {
             }
             if output != nil {
                 let data = output!.items.self[0] as! LEC_CATE
-                let firstCategory: [String] = ["전체", "보건", "개발", "어학", "자격증", "필수", "재무"]
+                let firstCategory: [String] = ["전체", "개발", "금융", "문화", "외국어", "육아", "자격증", "필수"]
                 var secondCategory = [[String]]()
-//                secondCategory.append(parseListData(beforeParsed:data._Care as! NSArray))
-//                secondCategory.append(parseListData(beforeParsed:data._develop as! NSArray))
-//                secondCategory.append(parseListData(beforeParsed:data._Culture as! NSArray))
-//                secondCategory.append(parseListData(beforeParsed:data._English as! NSArray))
-//                secondCategory.append(parseListData(beforeParsed:data._Certicate as! NSArray))
-//                secondCategory.append(parseListData(beforeParsed:data._Duty as! NSArray))
-//                secondCategory.append(parseListData(beforeParsed:data._Finance as! NSArray))
+                secondCategory.append(parseListData(beforeParsed:data._개발 as! NSArray))
+                secondCategory.append(parseListData(beforeParsed:data._금융 as! NSArray))
+                secondCategory.append(parseListData(beforeParsed:data._문화 as! NSArray))
+                secondCategory.append(parseListData(beforeParsed:data._외국어 as! NSArray))
+                secondCategory.append(parseListData(beforeParsed:data._육아 as! NSArray))
+                secondCategory.append(parseListData(beforeParsed:data._자격증 as! NSArray))
+                secondCategory.append(parseListData(beforeParsed:data._필수 as! NSArray))
 //                self.lec_cate = secondCategory
                 print(firstCategory, "after")
                 print(secondCategory, "after")

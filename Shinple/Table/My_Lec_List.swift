@@ -47,8 +47,8 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_U_length" : "U_length",
             "_W_date" : "W_date",
             "_E_date" : "E_date",
-            "_L_content" : "L_content",
-            "_Duty" : "Duty"
+            "_Duty" : "Duty",
+            "_L_content" : "L_content"
         ]
     }
     

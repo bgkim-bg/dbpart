@@ -35,7 +35,7 @@ class ANSWER: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_A_date" : "A_date",
             "_Q_id": "Q_id",
             "_A_time" : "A_time",
-            "_A_tit": "A_tit"
+            "_A_tit" :"A_tit",
         ]
     }
     
