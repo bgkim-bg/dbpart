@@ -119,13 +119,6 @@ func initQueryExpression() -> AWSDynamoDBQueryExpression {
 //}
 
 
-func dbGetAlertNotice() {
-    
-}
-func dbGetAlertNecessaryLecture() {
-}
-
-
 //
 //func testQueryEmployee(whereQuery: [String:Any], operatorText: [String]) {
 //    let queryExpression = AWSDynamoDBQueryExpression()

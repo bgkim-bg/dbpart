@@ -51,6 +51,7 @@ class NavigationController: UINavigationController {
 //            sampleLecture._S_cate_num = 12000
 //            sampleLecture._U_date = "2019-06-01"
 //            self.dbUpdateLectureWatched(isLectureSavedBefore: true, targetLecture: sampleLecture, targetE_num: 1100014, isFinished: false, watched: 220)
+//            self.dbGetAlertNotice(user_id: "qudrl99")
             print("m0")
             self.funcA()
             print("m1")
@@ -75,8 +76,8 @@ class NavigationController: UINavigationController {
         b = "b"
     }
     
-    func dbUpdateLectureWatched(isLectureSavedBefore:Bool, targetLecture:LECTURE, targetE_num:NSNumber, isFinished: Bool = false, rank: Int = 0, watched: Int = 0) {
-        if isLectureSavedBefore {
+    func dbUpdateLectureWatched(isLectureSavedBeforeOrDutyLecture:Bool, targetLecture:LECTURE, targetE_num:NSNumber, isFinished: Bool = false, rank: Int = 0, watched: Int = 0) {
+        if isLectureSavedBeforeOrDutyLecture {
             let scanExpression = AWSDynamoDBScanExpression()
             scanExpression.filterExpression = "E_num = :E_num AND Lecture_num = :Lecture_num"
             scanExpression.projectionExpression = "My_num, C_status, Duty, E_date, E_num, J_status, L_length, L_link_img, L_link_video, L_name, S_cate_num, U_length, Lecture_num, L_content"
@@ -88,9 +89,7 @@ class NavigationController: UINavigationController {
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy-MM-dd"
                     let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
-                    print("1")
                     var inputToMyLecList: My_Lec_List = paginatedOutput.items[0] as! My_Lec_List
-                    print("2")
                     inputToMyLecList._W_date = formatter.string(from: today)
                     inputToMyLecList._U_length = watched as NSNumber
                     if isFinished {
@@ -475,7 +474,9 @@ class NavigationController: UINavigationController {
                 formatter.dateFormat = "yyyy-MM-dd"
                 let today = Date()
                 for item in paginatedOutput.items as! [My_Lec_List] {
-                    print(item)
+                    if item._U_length == 0 {
+                        continue
+                    }
                     let upload = formatter.date(from: item._W_date!)
                     let interval = upload?.timeIntervalSince(today) as! Double
                     var inserted = false
@@ -542,6 +543,112 @@ class NavigationController: UINavigationController {
                     return nil
                 })
     }
+    
+    func dbGetAlertNotice(user_id:String, e_num:NSNumber) {
+        var toLectures = [String:[Any]]()
+        let scanExpression = AWSDynamoDBScanExpression()
+        scanExpression.filterExpression = "User_id = :User_id"
+        scanExpression.projectionExpression = "Alert_num, E_date_left, L_status, Lecture_num, N_num, Noti_cate, Noti_content, Noti_date, S_status, User_id"
+        scanExpression.expressionAttributeValues = [":User_id":user_id]
+        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+        dynamoDbObjectMapper.scan(My_Alert.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+            if task.result != nil {
+                let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd"
+                let today = Date()
+                var alerts = [Any]()
+                var noUse = [NSNumber]()
+                for item in paginatedOutput.items as! [My_Alert] {
+                    var past = formatter.date(from: item._Noti_date!)
+                    let interval = today.timeIntervalSince(past!) as! Double
+                    if interval > 14 {
+                        noUse.append(item._N_num!)
+                        continue
+                    }
+                    alerts.append(item)
+                }
+                let scanGlobalNoticeExpression = AWSDynamoDBScanExpression()
+                scanGlobalNoticeExpression.filterExpression = "N_num > :N_num"
+                scanGlobalNoticeExpression.projectionExpression = "N_num, Noti_cate, Noti_content, Noti_date"
+                scanGlobalNoticeExpression.expressionAttributeValues = [":N_num":0]
+                let dynamoDbObjectGlobalNoticeMapper = AWSDynamoDBObjectMapper.default()
+                dynamoDbObjectGlobalNoticeMapper.scan(NOTICE.self, expression: scanGlobalNoticeExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+                    if task.result != nil {
+                        let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                        for item in paginatedOutput.items as! [NOTICE] {
+                            for alert in alerts {
+                                if (alert as AnyObject)._N_num == item._N_num {
+                                    continue
+                                }
+                                if noUse.contains(item._N_num!) {
+                                    continue
+                                }
+                                alerts.append(item)
+                            }
+                        }
+                        let scanDutyNoticeExpression = AWSDynamoDBScanExpression()
+                        scanDutyNoticeExpression.filterExpression = "E_num = :E_num"
+                        scanDutyNoticeExpression.projectionExpression = "My_num, C_status, Duty, E_date, E_num, J_status, L_length, L_link_img, L_link_video, L_name, Lecture_num, S_cate_num, U_length, W_date"
+                        scanDutyNoticeExpression.expressionAttributeValues = [":E_num":Int(truncating: e_num)]
+                        let dynamoDbObjectDutyNoticeMapper = AWSDynamoDBObjectMapper.default()
+                        dynamoDbObjectDutyNoticeMapper.scan(My_Lec_List.self, expression: scanGlobalNoticeExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+                            if task.result != nil {
+                                let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                                for item in paginatedOutput.items as! [My_Lec_List] {
+                                    let deadLine = formatter.date(from: item._E_date!)
+                                    let interval = deadLine!.timeIntervalSince(today)
+                                    if interval <= 7.0 && item._Duty == true && item._C_status == false {
+                                        alerts.append(item)
+                                    }
+                                }
+                                for alert in alerts {
+                                    if type(of: alert) == My_Lec_List.self {
+                                    }
+                                }
+                                
+                                
+                            }
+                            if ((task.error) != nil) {
+                                print("Error: \(task.error)")
+                            }
+                            return nil
+                        })
+                    }
+                    if ((task.error) != nil) {
+                        print("Error: \(task.error)")
+                    }
+                    return nil
+                })
+
+                //                    var inserted = false
+                //                    var index = 0
+                //                    for indexItem in indexAry {
+                //                        if interval >= indexItem {
+                //                            alerts.insert(item, at: index)
+                //                            indexAry.insert(interval, at: index)
+                //                            inserted = true
+                //                            break
+                //                        }
+                //                        index += 1
+                //                    }
+                //                    if !inserted {
+                //                        alerts.append(item)
+                //                        indexAry.append(interval)
+                //                    }
+
+                
+            }
+            if ((task.error) != nil) {
+                print("Error: \(task.error)")
+            }
+            return nil
+        })
+        
+    }
+    func dbGetAlertNecessaryLecture() {
+    }
+
     
     // MARK: Need to be tested
     func dbGetMainLectures(e_num:NSNumber) {
@@ -648,7 +755,6 @@ class NavigationController: UINavigationController {
                 lectureResult["english"] = lectureEnglish
                 lectureResult["certicate"] = lectureCerticate
 
-//                print(lectureResult)
                 print("function started")
                 self.dbGetMyLecturesFromMainLectures(e_num: e_num, fromLectures: lectureResult)
                 if ((task.error) != nil) {
