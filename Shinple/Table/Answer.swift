@@ -8,7 +8,7 @@ import AWSAuthCore
 @objcMembers
 
 
-class Answer: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
+class ANSWER: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     
     var _A_num : NSNumber?
     var _A_cate : String?
@@ -19,7 +19,7 @@ class Answer: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _A_tit : String?
     
     class func dynamoDBTableName() -> String {
-        return "Answer"
+        return "ANSWER"
     }
     
     class func hashKeyAttribute() -> String {
