@@ -21,6 +21,7 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _W_date : String?
     var _E_date : String?
     var _Duty : NSNumber?
+    var _L_content : String?
     
     class func dynamoDBTableName() -> String {
         return "My_Lec_List"
@@ -46,7 +47,8 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_U_length" : "U_length",
             "_W_date" : "W_date",
             "_E_date" : "E_date",
-            "_Duty" : "Duty"
+            "_Duty" : "Duty",
+            "_L_content" : "L_content"
         ]
     }
     

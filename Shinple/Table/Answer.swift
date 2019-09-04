@@ -18,9 +18,10 @@ class Answer: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _A_ans_id : String?
     var _A_ans_tit : String?
     var _A_time : String?
+    var _Q_id : String?
     
     class func dynamoDBTableName() -> String {
-        return "Answer"
+        return "ANSWER"
     }
     
     class func hashKeyAttribute() -> String {
@@ -37,7 +38,9 @@ class Answer: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_A_ans_date" : "A_ans_date",
             "_A_ans_id": "A_ans_id",
             "_A_time" : "A_time",
-            "_A_tit" : "A_tit"
+            "_A_tit" : "A_tit",
+            "_A_tit" :"A_tit",
+            "_Q_id" : "Q_id"
         ]
     }
     
