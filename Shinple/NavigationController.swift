@@ -15,7 +15,7 @@ class NavigationController: UINavigationController {
     //let img = UIImage(named: "tabbar")
     var a: String?
     var b: String?
-    
+    var sampleWatched = false
     
     override func viewDidLoad() {
         
@@ -31,9 +31,26 @@ class NavigationController: UINavigationController {
 //            something._S_cate_num = 11000
 //            self.dbGetLectureDetail(lecture: something)
 //            self.dbAddComment(l_num: 11001, comment: "싫어요", date: "2018-08-12", u_id: " bkg123")
-//            self.dbAddQuestion(q_cate: "사용장애", q_content: "동영상 재생이 불가합니다", q_date: "2019-12-31", q_id: "kisung135", q_time: "22:24", q_tit: "동영상 재생 문제입니다")
-//            self.dbGetMainLectures(e_num: 110002)
-            self.dbGetQuestion(q_id: "wldn03")
+            //            self.dbGetMainLectures(e_num: 110002)
+//            self.dbAddQuestion(q_cate: "사용문의", q_content: "동영상 재생이 불가합니다", q_date: "2020-01-01", q_id: "llllll135", q_time: "22:24", q_tit: "동영상 재생 문제입니다")
+//            self.dbGetQuestion(q_id: "wldn03")
+//            let sampleLecture:LECTURE = LECTURE()
+//            sampleLecture._Lecture_num = 12002
+//            sampleLecture._Duty = true
+//            sampleLecture._E_date = "2019-07-01"
+//            sampleLecture._L_cate = "필수"
+//            sampleLecture._L_content = "지체장애인은 체육 활동을 즐기지 않을 거라는 비장애인의 잘못된 생각 때문에 오히려 상처받는 지체장애인의 현실 등 비장애인이 지체장애에 대해 가지는 편견을 바로잡는 우리가 몰랐던 이야기"
+//            sampleLecture._L_count = 312
+//            sampleLecture._L_length = 1000
+//            sampleLecture._L_link_img = "https://shinpleios.s3.us-east-2.amazonaws.com/Duty/Disabled/image/Chap3.png"
+//            sampleLecture._L_link_video = "https://shinpleios.s3.us-east-2.amazonaws.com/Duty/Disabled/video/Chap3.mp4"
+//            sampleLecture._L_name = "지장애인식 개선"
+//            sampleLecture._L_rate = 3
+//            sampleLecture._L_teacher = "김병기"
+//            sampleLecture._S_cate = "장애인인식개선"
+//            sampleLecture._S_cate_num = 12000
+//            sampleLecture._U_date = "2019-06-01"
+//            self.dbUpdateLectureWatched(isLectureSavedBefore: true, targetLecture: sampleLecture, targetE_num: 1100014, isFinished: false, watched: 220)
             print("m0")
             self.funcA()
             print("m1")
@@ -57,32 +74,137 @@ class NavigationController: UINavigationController {
         print("b1")
         b = "b"
     }
-//    func dbUpdateLectureWatched(lecture:Any) {
-//        let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
-//        if type(of: lecture) == LECTURE.self {
-//            var casted = lecture as! LECTURE
-//
-//
-//
-//
-//        } else {
-//            var casted = lecture as! My_Lec_List
-//        }
-//
-//
-//        let uMyLectureList : My_Lec_List = sample![index]
-//        uMyLectureList._J_status = type
-//        dynamoDbObjectMapper.save(uMyLectureList, completionHandler: {(error: Error?) -> Void in
-//        if let error = error {
-//        print(" Amazon DynamoDB Save Error: \(error)")
-//        return
-//        }
-//        print("An item was updated.")
-//        })
-//    }
-//    func dbAddRate() {
-//        // MARK: need rated people
-//    }
+    
+    func dbUpdateLectureWatched(isLectureSavedBefore:Bool, targetLecture:LECTURE, targetE_num:NSNumber, isFinished: Bool = false, rank: Int = 0, watched: Int = 0) {
+        if isLectureSavedBefore {
+            let scanExpression = AWSDynamoDBScanExpression()
+            scanExpression.filterExpression = "E_num = :E_num AND Lecture_num = :Lecture_num"
+            scanExpression.projectionExpression = "My_num, C_status, Duty, E_date, E_num, J_status, L_length, L_link_img, L_link_video, L_name, S_cate_num, U_length, Lecture_num, L_content"
+            scanExpression.expressionAttributeValues = [":E_num":Int(truncating: targetE_num), ":Lecture_num":Int(truncating: targetLecture._Lecture_num!)]
+            let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+            dynamoDbObjectMapper.scan(My_Lec_List.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+                if task.result != nil {
+                    let today = Date()
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd"
+                    let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                    print("1")
+                    var inputToMyLecList: My_Lec_List = paginatedOutput.items[0] as! My_Lec_List
+                    print("2")
+                    inputToMyLecList._W_date = formatter.string(from: today)
+                    inputToMyLecList._U_length = watched as NSNumber
+                    if isFinished {
+                        var inputToLecture: LECTURE = targetLecture
+                        if inputToLecture._L_count == nil {
+                            inputToLecture._L_count = 1
+                        } else {
+                            inputToLecture._L_count = Int(truncating: inputToLecture._L_count!) + 1 as NSNumber
+                        }
+                        if inputToLecture._L_rate == nil {
+                            inputToLecture._L_rate = rank as NSNumber
+                        } else {
+                            inputToLecture._L_rate = Int(truncating: inputToLecture._L_rate!) + rank as NSNumber
+                        }
+                        inputToMyLecList._C_status = true
+                        inputToMyLecList._U_length = inputToMyLecList._L_length
+                        
+                        let saveMapperLecture = AWSDynamoDBObjectMapper.default()
+                        saveMapperLecture.save(inputToLecture, completionHandler: {
+                            (error: Error?) -> Void in
+                            if let error = error {
+                                print(" Amazon DynamoDB Save Error: \(error)")
+                                return
+                            }
+                            print("An item was updated.")
+                        })
+                    }
+                    let saveMapper = AWSDynamoDBObjectMapper.default()
+                    saveMapper.save(inputToMyLecList, completionHandler: {
+                        (error: Error?) -> Void in
+                        if let error = error {
+                            print(" Amazon DynamoDB Save Error: \(error)")
+                            return
+                        }
+                        print("An item was updated.")
+                    })
+                }
+                if ((task.error) != nil) {
+                    print("Error: \(task.error)")
+                }
+                return nil
+            })
+        } else {
+            let scanExpression = AWSDynamoDBScanExpression()
+            scanExpression.filterExpression = "My_num > :My_num"
+            scanExpression.projectionExpression = "My_num"
+            scanExpression.expressionAttributeValues = [":My_num":0]
+            let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
+            dynamoDbObjectMapper.scan(My_Lec_List.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+                if task.result != nil {
+                    let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
+                    let today = Date()
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd"
+                    var inputToMyLecList: My_Lec_List = My_Lec_List()
+                    inputToMyLecList._My_num = paginatedOutput.items.count + 1 as NSNumber
+                    inputToMyLecList._E_num = targetE_num
+                    inputToMyLecList._C_status = false
+                    inputToMyLecList._J_status = false
+                    inputToMyLecList._L_length = targetLecture._L_length
+                    inputToMyLecList._L_link_img = targetLecture._L_link_img
+                    inputToMyLecList._L_link_video = targetLecture._L_link_video
+                    inputToMyLecList._L_name = targetLecture._L_name
+                    inputToMyLecList._Lecture_num = targetLecture._Lecture_num
+                    inputToMyLecList._L_content = targetLecture._L_content
+                    inputToMyLecList._Lecture_num = targetLecture._Lecture_num
+                    inputToMyLecList._S_cate_num = targetLecture._S_cate_num
+                    inputToMyLecList._W_date = formatter.string(from: today)
+                    inputToMyLecList._E_date = targetLecture._E_date
+                    inputToMyLecList._U_length = watched as NSNumber
+                    inputToMyLecList._Duty = targetLecture._Duty
+                    if isFinished {
+                        var inputToLecture: LECTURE = targetLecture
+                        if inputToLecture._L_count == nil {
+                            inputToLecture._L_count = 1
+                        } else {
+                            inputToLecture._L_count = Int(truncating: inputToLecture._L_count!) + 1 as NSNumber
+                        }
+                        if inputToLecture._L_rate == nil {
+                            inputToLecture._L_rate = rank as NSNumber
+                        } else {
+                            inputToLecture._L_rate = Int(truncating: inputToLecture._L_rate!) + rank as NSNumber
+                        }
+                        inputToMyLecList._C_status = true
+                        inputToMyLecList._U_length = inputToMyLecList._L_length
+                        
+                        let saveMapperLecture = AWSDynamoDBObjectMapper.default()
+                        saveMapperLecture.save(inputToLecture, completionHandler: {
+                            (error: Error?) -> Void in
+                            if let error = error {
+                                print(" Amazon DynamoDB Save Error: \(error)")
+                                return
+                            }
+                            print("An item was updated.")
+                        })
+
+                    }
+                    let saveMapper = AWSDynamoDBObjectMapper.default()
+                    saveMapper.save(inputToMyLecList, completionHandler: {
+                        (error: Error?) -> Void in
+                        if let error = error {
+                            print(" Amazon DynamoDB Save Error: \(error)")
+                            return
+                        }
+                        print("An item was updated.")
+                    })
+                }
+                if ((task.error) != nil) {
+                    print("Error: \(task.error)")
+                }
+                return nil
+            })
+        }
+    }
     
     // MARK: Need to be tested
     func dbGetQuestion(q_id:String) {
@@ -125,15 +247,15 @@ class NavigationController: UINavigationController {
                 scanAnsweredQuestion.projectionExpression = "A_cate, A_content, A_date, A_time, A_tit, Q_id"
                 scanAnsweredQuestion.expressionAttributeValues = [":Q_id":q_id]
                 let dynamoDbObjectMapperAnsweredQuestion = AWSDynamoDBObjectMapper.default()
-                dynamoDbObjectMapperAnsweredQuestion.scan(ANSWER.self, expression: scanExpressionQuestion).continueWith(block: { (task:AWSTask!) -> AnyObject? in
+                dynamoDbObjectMapperAnsweredQuestion.scan(ANSWER.self, expression: scanAnsweredQuestion).continueWith(block: { (task:AWSTask!) -> AnyObject? in
                     if task.result != nil {
                         let paginatedOutput = task.result as! AWSDynamoDBPaginatedOutput
-                        for item2 in paginatedOutput.items as! [ANSWER] {
-                            print(item2, "answer")
+                        for item in paginatedOutput.items as! [ANSWER] {
+                            print(item, "answer")
                             for (index, question) in questions.enumerated() {
-                                if (question as AnyObject)._Q_tit == item2._A_tit {
-                                    questions.insert(item2, at: index)
-                                    print("inserted......", item2)
+                                if (question as AnyObject)._Q_tit == item._A_tit {
+                                    questions.insert(item, at: index)
+                                    print("inserted......", item)
                                 }
                             }
                         }
@@ -225,18 +347,21 @@ class NavigationController: UINavigationController {
     func dbGetLectureDetail(lecture:Any) {
         let s_cate_num: NSNumber?
         let lecture_num: NSNumber?
+        var targetE_num: NSNumber?
         if type(of: lecture) == LECTURE.self {
             var casted = lecture as! LECTURE
             s_cate_num = casted._S_cate_num
             lecture_num = casted._Lecture_num
         } else {
             var casted = lecture as! My_Lec_List
+            // MARK: You should assign true for value -> 강의 시청 종료 후 나갈 때 필요
             s_cate_num = casted._S_cate_num
             lecture_num = casted._Lecture_num
+            targetE_num = casted._E_num
         }
         let scanExpression = AWSDynamoDBScanExpression()
         scanExpression.filterExpression = "S_cate_num = :S_cate_num"
-        scanExpression.projectionExpression = "Duty, E_date, L_cate, L_content, L_length, L_link_img, L_link_video, L_name, L_rate, L_teacher, Lecture_num, S_cate, S_cate_num, U_date, L_count"
+        scanExpression.projectionExpression = "Lecture_num, Duty, E_date, L_cate, L_content, L_length, L_link_img, L_link_video, L_name, L_rate, L_teacher, Lecture_num, S_cate, S_cate_num, U_date, L_count"
         scanExpression.expressionAttributeValues = [":S_cate_num":Int(truncating: s_cate_num!)]
         let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         dynamoDbObjectMapper.scan(LECTURE.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
@@ -262,7 +387,13 @@ class NavigationController: UINavigationController {
                         lectureRelated.append(item)
                     }
                 }
-                print("related", lectureRelated)
+                if targetE_num != nil {
+                    // YOU SHOULD
+                    let resultRelated = ["related":lectureRelated]
+                    self.dbGetMyLecturesFromMainLectures(e_num:targetE_num!, fromLectures: resultRelated)
+                } else {
+                    print("related", lectureRelated)
+                }
             }
             if ((task.error) != nil) {
                 print("Error: \(task.error)")
@@ -332,7 +463,7 @@ class NavigationController: UINavigationController {
     func dbGetRecentLectures(e_num: NSNumber) {
         let scanExpression = AWSDynamoDBScanExpression()
         scanExpression.filterExpression = "E_num = :E_num"
-        scanExpression.projectionExpression = "My_num, E_num, C_status, J_status, L_length, L_link_img, L_link_video, L_name, L_num, S_num, U_length, W_date"
+        scanExpression.projectionExpression = "My_num, C_status, Duty, E_date, E_num, J_status, L_length, L_link_img, L_link_video, L_name, S_cate_num, U_length, Lecture_num, L_content"
         scanExpression.expressionAttributeValues = [":E_num":Int(truncating: e_num)]
         let dynamoDbObjectMapper = AWSDynamoDBObjectMapper.default()
         dynamoDbObjectMapper.scan(My_Lec_List.self, expression: scanExpression).continueWith(block: { (task:AWSTask!) -> AnyObject? in
@@ -390,18 +521,13 @@ class NavigationController: UINavigationController {
                                     toLectures[key] = fromLectures[key]
                                     continue
                                 }
-//                                print("hello!!!!", fromLectures[key], key)
-                                
                                 var temp = [Any]()
                                 for data in fromLectures[key]! {
-//                                    print("world!!", data)
-//                                    print("is same??", (data as AnyObject)._Lecture_num, item._Lecture_num)
                                     if (data as AnyObject)._Lecture_num == item._Lecture_num {
                                         print("same!!", key, (data as AnyObject)._Lecture_num, item._Lecture_num)
                                         temp.append(item)
                                         print(toLectures)
                                     } else {
-//                                        print("not same!!", key, (data as AnyObject)._Lecture_num, item._Lecture_num)
                                         temp.append(data)
                                     }
                                 }
@@ -558,9 +684,6 @@ class NavigationController: UINavigationController {
                 let data = output!.items.self[0] as! LEC_CATE
                 let firstCategory: [String] = ["전체", "보건", "개발", "어학", "자격증", "필수", "재무"]
                 var secondCategory = [[String]]()
-//                for cate in firstCategory {
-//                    secondCategory.append(parseListData(beforeParsed:data[cate] as! NSArray))
-//                }
 //                secondCategory.append(parseListData(beforeParsed:data._Care as! NSArray))
 //                secondCategory.append(parseListData(beforeParsed:data._develop as! NSArray))
 //                secondCategory.append(parseListData(beforeParsed:data._Culture as! NSArray))

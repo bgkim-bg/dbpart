@@ -19,6 +19,7 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
     var _S_cate_num : NSNumber?
     var _U_length : NSNumber?
     var _W_date : String?
+    var _L_content : String?
     var _E_date : String?
     var _Duty : NSNumber?
     
@@ -46,6 +47,7 @@ class My_Lec_List: AWSDynamoDBObjectModel, AWSDynamoDBModeling {
             "_U_length" : "U_length",
             "_W_date" : "W_date",
             "_E_date" : "E_date",
+            "_L_content" : "L_content",
             "_Duty" : "Duty"
         ]
     }
