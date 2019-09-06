@@ -1,9 +1,8 @@
 
 import Foundation
 import UIKit
-import AWSDynamoDB
 import AWSAuthCore
-
+import AWSDynamoDB
 
 @objcMembers
 
